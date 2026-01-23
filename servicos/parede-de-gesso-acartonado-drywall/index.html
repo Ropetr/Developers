@@ -405,6 +405,324 @@
         }
     </style>
     <link rel="stylesheet" href="styles-components.css?v=8">
+    <!-- Header CSS (evita pisca-pisca) -->
+    <style>
+        .main-header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 10px 0;
+        }
+        
+        .header-container {
+            max-width: 1410px;
+            width: 90%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+        
+        .main-nav {
+            flex: 1;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            margin: 0;
+            padding: 0;
+            justify-content: center;
+        }
+        
+        .nav-menu > li > a {
+            color: #333;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 500;
+            padding: 10px 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.3s;
+        }
+        
+        .nav-menu > li > a:hover {
+            color: #AA000E;
+        }
+        
+        .arrow {
+            font-size: 1rem;
+        }
+        
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #fff;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            padding: 10px 0;
+            min-width: 220px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s;
+            list-style: none;
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-menu li a {
+            display: block;
+            padding: 10px 20px;
+            color: #333;
+            text-decoration: none;
+            font-size: 1.4rem;
+            transition: all 0.2s;
+        }
+        
+        .dropdown-menu li a:hover {
+            background: #f5f5f5;
+            color: #AA000E;
+        }
+        
+        .header-contact .whatsapp-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #25D366;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 1.4rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .header-contact .whatsapp-btn:hover {
+            background: #128C7E;
+            transform: scale(1.05);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 3px;
+            background: #333;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+        
+        /* Espaçamento para conteúdo após header fixo */
+        body {
+            padding-top: 75px;
+        }
+        
+        @media (max-width: 992px) {
+            .main-nav {
+                position: fixed;
+                top: 75px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 75px);
+                background: #fff;
+                transition: left 0.3s;
+                overflow-y: auto;
+            }
+            
+            .main-nav.active {
+                left: 0;
+            }
+            
+            .nav-menu {
+                flex-direction: column;
+                padding: 20px;
+                gap: 0;
+            }
+            
+            .nav-menu > li > a {
+                padding: 15px 10px;
+                border-bottom: 1px solid #eee;
+                font-size: 1.6rem;
+            }
+            
+            .dropdown-menu {
+                position: static;
+                box-shadow: none;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                padding-left: 20px;
+                display: none;
+            }
+            
+            .dropdown.active .dropdown-menu {
+                display: block;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+            }
+            
+            .header-contact {
+                display: none;
+            }
+        }
+        
+        /* Footer CSS */
+        .main-footer {
+            background: #fff;
+            color: #333;
+            padding: 60px 0 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .footer-container {
+            max-width: 1410px;
+            width: 90%;
+            margin: 0 auto;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            height: 50px;
+            margin-bottom: 15px;
+        }
+        
+        .footer-col p {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .footer-col h4 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: #AA000E;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 8px;
+        }
+        
+        .footer-col ul li a {
+            color: #555;
+            text-decoration: none;
+            font-size: 1.4rem;
+            transition: color 0.3s;
+        }
+        
+        .footer-col ul li a:hover {
+            color: #AA000E;
+        }
+        
+        .footer-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #25D366;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 1.4rem;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        
+        .footer-whatsapp:hover {
+            background: #128C7E;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .footer-bottom p {
+            font-size: 1.3rem;
+            color: #888;
+        }
+        
+        @media (max-width: 992px) {
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* WhatsApp Float */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #25D366;
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            transition: all 0.3s;
+        }
+        
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+        }
+    </style>
+
 </head>
 <body>
     <!-- Header Container -->
