@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Página Principal -->
+  <!-- Home -->
   <url>
     <loc>https://www.planacdistribuidora.com.br/</loc>
     <lastmod>2026-01-23</lastmod>
@@ -72,7 +72,7 @@
     <priority>0.8</priority>
   </url>
   
-  <!-- TERMOACÚSTICA -->
+  <!-- ISOLAMENTO -->
   <url>
     <loc>https://www.planacdistribuidora.com.br/servicos/la-de-vidro</loc>
     <lastmod>2026-01-23</lastmod>
@@ -93,34 +93,6 @@
   </url>
   <url>
     <loc>https://www.planacdistribuidora.com.br/servicos/manta-termica-aluminizada</loc>
-    <lastmod>2026-01-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <!-- PORTAS -->
-  <url>
-    <loc>https://www.planacdistribuidora.com.br/servicos/kit-porta</loc>
-    <lastmod>2026-01-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.planacdistribuidora.com.br/servicos/kit-porta-de-correr</loc>
-    <lastmod>2026-01-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.planacdistribuidora.com.br/servicos/portas-sanfonadas</loc>
-    <lastmod>2026-01-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <!-- RODAPÉS -->
-  <url>
-    <loc>https://www.planacdistribuidora.com.br/servicos/rodapes</loc>
     <lastmod>2026-01-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
