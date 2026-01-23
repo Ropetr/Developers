@@ -1,0 +1,3 @@
+# Cloudflare Pages Redirects
+# URLs limpas - serve .html sem a extensão
+/servicos/:slug /servicos/:slug.html 200
