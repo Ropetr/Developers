@@ -1,862 +1,917 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <!-- ========== Meta Tags Essenciais ========== -->
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  
-  <!-- ========== SEO Meta Tags ========== -->
-  <title>PLANAC Distribuidora | Forros, Divisórias e Drywall em Londrina</title>
-  <meta name="description" content="Distribuidor autorizado de forros PVC, gesso acartonado, drywall, divisórias e materiais para construção em Londrina e região. Orçamento grátis! ☎ (43) 98418-2582">
-  <meta name="keywords" content="forro pvc, gesso acartonado, drywall, divisórias, forro de gesso, londrina, materiais construção, isolamento térmico, isolamento acústico">
-  <meta name="author" content="PLANAC Distribuidora">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://planacdistribuidora.com.br/">
-  
-  <!-- ========== Open Graph / Facebook ========== -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://planacdistribuidora.com.br/">
-  <meta property="og:title" content="PLANAC Distribuidora | Forros, Divisórias e Drywall em Londrina">
-  <meta property="og:description" content="Distribuidor autorizado de forros PVC, gesso acartonado, drywall, divisórias e materiais para construção em Londrina e região.">
-  <meta property="og:image" content="https://planacdistribuidora.com.br/images/og-image.png">
-  <meta property="og:locale" content="pt_BR">
-  <meta property="og:site_name" content="PLANAC Distribuidora">
-  
-  <!-- ========== Twitter Card ========== -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="PLANAC Distribuidora | Forros e Divisórias">
-  <meta name="twitter:description" content="Distribuidor autorizado de forros PVC, gesso acartonado, drywall em Londrina.">
-  <meta name="twitter:image" content="https://planacdistribuidora.com.br/images/og-image.png">
-  
-  <!-- ========== Favicon ========== -->
-  <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
-  <link rel="manifest" href="/favicon/site.webmanifest">
-  <meta name="theme-color" content="#ec3237">
-  <meta name="msapplication-TileColor" content="#ec3237">
-  
-  <!-- ========== Preconnect para Recursos Externos ========== -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  
-  <!-- ========== Preload de Recursos Críticos ========== -->
-  <!-- Banner LCP - Desktop -->
-  <link rel="preload" as="image" href="/cdn-cgi/image/width=1920,fit=cover,format=auto,quality=85/images/banners/banner-1.png" media="(min-width: 992px)">
-  <!-- Banner LCP - Mobile -->
-  <link rel="preload" as="image" href="/cdn-cgi/image/width=1920,fit=cover,format=auto,quality=85/images/banners/banner-1.png" media="(max-width: 576px)">
-  
-  <!-- ========== Fontes ========== -->
-  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- ========== CSS ========== -->
-  <link rel="stylesheet" href="/css/styles.css">
-  
-  <!-- ========== Schema.org Structured Data ========== -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "PLANAC Distribuidora",
-    "image": "https://planacdistribuidora.com.br/images/logo/logo-planac.svg",
-    "description": "Distribuidor autorizado de forros PVC, gesso acartonado, drywall, divisórias e materiais para construção em Londrina e região.",
-    "url": "https://planacdistribuidora.com.br",
-    "telephone": "+554398418-2582",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Rua Example, 123",
-      "addressLocality": "Londrina",
-      "addressRegion": "PR",
-      "postalCode": "86000-000",
-      "addressCountry": "BR"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": -23.3045,
-      "longitude": -51.1696
-    },
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      "opens": "08:00",
-      "closes": "18:00"
-    },
-    "sameAs": [
-      "https://www.instagram.com/planacdistribuidora"
-    ]
-  }
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planac Distribuidora - Forros e Divisórias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 10px;
+        }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            overflow-x: hidden;
+            padding-bottom: 120px;
+        }
+
+        .container {
+            max-width: 1410px;
+            width: 90%;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Banner */
+        .banner {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('https://painel-planac.codiehost.com.br/uploads/133473966882981354.jpeg');
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            padding-top: 100px;
+        }
+
+        .banner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .banner-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #fff;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .banner h1 {
+            font-size: clamp(3rem, 8vw, 8rem);
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            width: 100%;
+            text-shadow:
+                0 0 10px rgba(0,0,0,0.8),
+                0 0 20px rgba(0,0,0,0.6),
+                0 0 30px rgba(0,0,0,0.4),
+                0 0 40px rgba(0,0,0,0.3),
+                0 0 50px rgba(0,0,0,0.2),
+                2px 2px 4px rgba(0,0,0,0.9);
+        }
+
+        .banner p {
+            font-size: clamp(1.8rem, 3vw, 3.6rem);
+            margin-bottom: 50px;
+            width: 100%;
+            text-shadow:
+                0 0 10px rgba(0,0,0,0.8),
+                0 0 20px rgba(0,0,0,0.6),
+                0 0 30px rgba(0,0,0,0.4),
+                0 0 40px rgba(0,0,0,0.3),
+                2px 2px 4px rgba(0,0,0,0.9);
+        }
+
+        .btn-primary {
+            background: #ec3237;
+            color: #fff;
+            padding: 15px 40px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #96181c;
+        }
+
+        /* Cards Section */
+        .cards-section {
+            padding: 80px 0;
+            background: #fff;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .card {
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 3px rgba(0,0,0,0.16);
+            text-align: center;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+        }
+
+        .card-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .card h4 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #3d3d3d;
+            text-shadow:
+                0 0 5px rgba(0,0,0,0.3),
+                0 0 10px rgba(0,0,0,0.2),
+                0 0 15px rgba(0,0,0,0.1),
+                1px 1px 2px rgba(0,0,0,0.4);
+        }
+
+        /* Services Section */
+        .services-section {
+            padding: 80px 0;
+            background: #fff;
+        }
+
+        .section-title {
+            font-size: clamp(3rem, 4.8vw, 4.8rem);
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #3d3d3d;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .service-card {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 50px 30px 30px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.48);
+            z-index: 1;
+        }
+
+        .service-content {
+            position: relative;
+            z-index: 2;
+            color: #fff;
+            text-align: center;
+        }
+
+        .service-card h2 {
+            font-size: clamp(2.4rem, 4vw, 4rem);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            text-shadow:
+                0 0 10px rgba(0,0,0,0.9),
+                0 0 20px rgba(0,0,0,0.7),
+                0 0 30px rgba(0,0,0,0.5),
+                0 0 40px rgba(0,0,0,0.3),
+                2px 2px 4px rgba(0,0,0,1);
+        }
+
+        .service-card h6 {
+            font-size: 2rem;
+            margin-bottom: 50px;
+            text-shadow:
+                0 0 8px rgba(0,0,0,0.8),
+                0 0 15px rgba(0,0,0,0.6),
+                0 0 25px rgba(0,0,0,0.4),
+                1px 1px 3px rgba(0,0,0,0.9);
+        }
+
+        .service-card .btn-primary {
+            border: 2px solid #fff;
+            background: transparent;
+            margin: 0 auto;
+        }
+
+        .service-card .btn-primary:hover {
+            background: #ec3237;
+            border-color: #ec3237;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 80px 0;
+            background: #f6f8fb;
+        }
+
+        .about-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-text h5 {
+            color: #AA000E;
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            text-shadow:
+                0 0 5px rgba(170,0,14,0.4),
+                0 0 10px rgba(170,0,14,0.3),
+                0 0 15px rgba(170,0,14,0.2),
+                1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .about-text h2 {
+            font-size: 4.8rem;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            text-shadow:
+                0 0 8px rgba(0,0,0,0.5),
+                0 0 15px rgba(0,0,0,0.3),
+                0 0 25px rgba(0,0,0,0.2),
+                1px 1px 3px rgba(0,0,0,0.6);
+        }
+
+        .about-text p {
+            font-size: 1.6rem;
+            line-height: 1.6;
+            text-align: justify;
+            margin-bottom: 20px;
+        }
+
+        .values-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .value-card {
+            border: 1px solid #AA000E;
+            padding: 30px;
+            border-radius: 10px;
+            background: #fff;
+        }
+
+        .value-card h4 {
+            color: #AA000E;
+            font-size: 2.4rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            text-shadow:
+                0 0 6px rgba(170,0,14,0.4),
+                0 0 12px rgba(170,0,14,0.3),
+                0 0 18px rgba(170,0,14,0.2),
+                1px 1px 2px rgba(0,0,0,0.4);
+        }
+
+        .value-card p {
+            font-size: 1.6rem;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 100px 0;
+            background: linear-gradient(180deg, #c52328 0%, #96181c 100%);
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 50px;
+        }
+
+        .contact-info {
+            color: #fff;
+        }
+
+        .contact-info h3 {
+            font-size: 4.8rem;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            text-shadow:
+                0 0 10px rgba(0,0,0,0.7),
+                0 0 20px rgba(0,0,0,0.5),
+                0 0 30px rgba(0,0,0,0.3),
+                2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .contact-info p {
+            font-size: 1.6rem;
+            margin-bottom: 40px;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contact-form {
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            color: #fff;
+            font-size: 1.6rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 1.6rem;
+            font-family: 'Barlow', sans-serif;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-group button {
+            width: 100%;
+            max-width: 250px;
+            margin: 0 auto;
+            display: block;
+            background: #fff;
+            color: #AA000E;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.6rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .form-group button:hover {
+            background: #ec3237;
+            color: #fff;
+        }
+
+        .heart-icon {
+            display: inline-block;
+            vertical-align: middle;
+            width: 20px;
+            height: 20px;
+            animation: heart-pulse 2s infinite;
+        }
+
+        @keyframes heart-pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        70% {
+                box-shadow: 0 0 0 20px rgba(37, 211, 102, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+
+        
+
+        .mobile-menu-btn:hover,
+        
+
+        
+            70% {
+                box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+            }
+        }
+
+        /* Responsive */
+
+        /* Desktop: Ajusta altura do banner */
+        @media (min-width: 1025px) {
+            .banner {
+                height: 75vh;
+                min-height: 600px;
+            }
+
+            .banner-content {
+                margin-top: 0;
+            }
+        }
+
+        /* Tela média: Esconde números dos telefones, mantém ícones e nav-links */
+        @media (max-width: 1600px) {
+            
+
+            .phone-btn,
+            .whatsapp-btn,
+            
+
+            
+
+            
+        }
+
+        /* Tela pequena: Menu hamburguer, mas ícones de telefone permanecem */
+        @media (max-width: 1024px) {
+            body {
+                padding-bottom: 80px;
+            }
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            .phone-btn,
+            .whatsapp-btn,
+            
+
+            .banner {
+                min-height: 60vh;
+                height: auto;
+                padding: 100px 20px 50px;
+                justify-content: center;
+            }
+
+            .cards-grid,
+            .services-grid {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 15px;
+            }
+
+            .container {
+                width: 95%;
+                padding: 0 10px;
+            }
+
+            .card {
+                padding: 20px 15px;
+            }
+
+            .card-icon {
+                width: 40px;
+                height: 40px;
+                margin: 0 auto 15px;
+            }
+
+            .card h4 {
+                font-size: 1.4rem;
+            }
+
+            .service-card {
+                min-height: 280px;
+            }
+
+            .about-container,
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            
+
+            
+
+            
+
+            
+
+            
+
+        }
+    </style>
+    <link rel="stylesheet" href="styles-components.css?v=8">
 </head>
-
 <body>
-  <!-- ========== Skip Link (Acessibilidade) ========== -->
-  <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
-  
-  <!-- ========== HEADER ========== -->
-  <header class="header header--transparent" role="banner">
-    <div class="container">
-      <div class="header__inner">
-        <!-- Logo -->
-        <a href="/" class="header__logo" aria-label="PLANAC Distribuidora - Página Inicial">
-          <img 
-            src="/images/logo/logo-planac.svg" 
-            alt="PLANAC Distribuidora" 
-            width="180" 
-            height="55"
-            loading="eager">
-        </a>
-        
-        <!-- Navegação Desktop -->
-        <nav class="nav" role="navigation" aria-label="Menu principal">
-          <ul class="nav__list">
-            <li class="nav__item">
-              <a href="/" class="nav__link nav__link--active">Início</a>
-            </li>
-            
-            <li class="nav__item nav__item--dropdown">
-              <a href="#forros" class="nav__link">Forros</a>
-              <div class="nav__dropdown" role="menu">
-                <a href="/servicos/pvc-branco" class="nav__dropdown-link" role="menuitem">Forro PVC Branco</a>
-                <a href="/servicos/pvc-amadeirado" class="nav__dropdown-link" role="menuitem">Forro PVC Amadeirado</a>
-                <a href="/servicos/pvc-modular" class="nav__dropdown-link" role="menuitem">Forro PVC Modular</a>
-                <a href="/servicos/forro-de-gesso-acartonado" class="nav__dropdown-link" role="menuitem">Forro Gesso Acartonado</a>
-                <a href="/servicos/gesso-modular" class="nav__dropdown-link" role="menuitem">Forro Gesso Modular</a>
-                <a href="/servicos/forrovid" class="nav__dropdown-link" role="menuitem">ForroVid</a>
-                <a href="/servicos/isopor" class="nav__dropdown-link" role="menuitem">Forro Isopor</a>
-              </div>
-            </li>
-            
-            <li class="nav__item nav__item--dropdown">
-              <a href="#divisorias" class="nav__link">Divisórias</a>
-              <div class="nav__dropdown" role="menu">
-                <a href="/servicos/parede-de-gesso-acartonado-drywall" class="nav__dropdown-link" role="menuitem">Divisória Drywall</a>
-                <a href="/servicos/divisoria-naval" class="nav__dropdown-link" role="menuitem">Divisória Naval</a>
-              </div>
-            </li>
-            
-            <li class="nav__item nav__item--dropdown">
-              <a href="#isolamento" class="nav__link">Isolamento</a>
-              <div class="nav__dropdown" role="menu">
-                <a href="/servicos/la-de-vidro" class="nav__dropdown-link" role="menuitem">Lã de Vidro</a>
-                <a href="/servicos/la-de-rocha" class="nav__dropdown-link" role="menuitem">Lã de Rocha</a>
-                <a href="/servicos/la-de-pet" class="nav__dropdown-link" role="menuitem">Lã de PET</a>
-                <a href="/servicos/manta-termica-aluminizada" class="nav__dropdown-link" role="menuitem">Manta Térmica</a>
-              </div>
-            </li>
-            
-            <li class="nav__item">
-              <a href="/#servicos" class="nav__link">Produtos</a>
-            </li>
-            
-            <li class="nav__item">
-              <a href="#contato" class="nav__link">Contato</a>
-            </li>
-          </ul>
-        </nav>
-        
-        <!-- CTA Header -->
-        <a href="https://api.whatsapp.com/send/?phone=5543984182582&text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento." 
-           class="header__cta" 
-           target="_blank" 
-           rel="noopener noreferrer">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-          </svg>
-          Orçamento
-        </a>
-        
-        <!-- Menu Mobile Toggle -->
-        <button 
-          class="menu-toggle" 
-          type="button" 
-          aria-label="Abrir menu" 
-          aria-expanded="false" 
-          aria-controls="mobile-nav">
-          <span class="menu-toggle__bar"></span>
-          <span class="menu-toggle__bar"></span>
-          <span class="menu-toggle__bar"></span>
-        </button>
-      </div>
-    </div>
-    
-    <!-- Menu Mobile -->
-    <nav class="mobile-nav" id="mobile-nav" role="navigation" aria-label="Menu mobile">
-      <ul class="mobile-nav__list">
-        <li class="mobile-nav__item">
-          <a href="/" class="mobile-nav__link mobile-nav__link--active">Início</a>
-        </li>
-        
-        <li class="mobile-nav__item mobile-nav__item--has-submenu">
-          <a href="#" class="mobile-nav__link">Forros</a>
-          <ul class="mobile-nav__submenu">
-            <li><a href="/servicos/pvc-branco" class="mobile-nav__sublink">Forro PVC Branco</a></li>
-            <li><a href="/servicos/pvc-amadeirado" class="mobile-nav__sublink">Forro PVC Amadeirado</a></li>
-            <li><a href="/servicos/pvc-modular" class="mobile-nav__sublink">Forro PVC Modular</a></li>
-            <li><a href="/servicos/forro-de-gesso-acartonado" class="mobile-nav__sublink">Forro Gesso Acartonado</a></li>
-            <li><a href="/servicos/gesso-modular" class="mobile-nav__sublink">Forro Gesso Modular</a></li>
-            <li><a href="/servicos/forrovid" class="mobile-nav__sublink">ForroVid</a></li>
-            <li><a href="/servicos/isopor" class="mobile-nav__sublink">Forro Isopor</a></li>
-          </ul>
-        </li>
-        
-        <li class="mobile-nav__item mobile-nav__item--has-submenu">
-          <a href="#" class="mobile-nav__link">Divisórias</a>
-          <ul class="mobile-nav__submenu">
-            <li><a href="/servicos/parede-de-gesso-acartonado-drywall" class="mobile-nav__sublink">Divisória Drywall</a></li>
-            <li><a href="/servicos/divisoria-naval" class="mobile-nav__sublink">Divisória Naval</a></li>
-          </ul>
-        </li>
-        
-        <li class="mobile-nav__item mobile-nav__item--has-submenu">
-          <a href="#" class="mobile-nav__link">Isolamento</a>
-          <ul class="mobile-nav__submenu">
-            <li><a href="/servicos/la-de-vidro" class="mobile-nav__sublink">Lã de Vidro</a></li>
-            <li><a href="/servicos/la-de-rocha" class="mobile-nav__sublink">Lã de Rocha</a></li>
-            <li><a href="/servicos/la-de-pet" class="mobile-nav__sublink">Lã de PET</a></li>
-            <li><a href="/servicos/manta-termica-aluminizada" class="mobile-nav__sublink">Manta Térmica</a></li>
-          </ul>
-        </li>
-        
-        <li class="mobile-nav__item">
-        </li>
-        
-        <li class="mobile-nav__item">
-          <a href="#contato" class="mobile-nav__link">Contato</a>
-        </li>
-      </ul>
-    </nav>
-  </header>
-  
-  <!-- ========== MAIN CONTENT ========== -->
-  <main id="main-content" role="main">
-    
-    <!-- ========== HERO / CARROSSEL ========== -->
-    <section class="hero" aria-label="Banner principal">
-      <div class="hero__carousel" role="region" aria-roledescription="carrossel" aria-label="Banners promocionais">
-        <div class="hero__slides">
-          
-          <!-- Slide 1 -->
-          <article class="hero__slide" role="group" aria-roledescription="slide" aria-label="1 de 3">
-            <picture>
-              <source media="(max-width: 575px)" srcset="/images/banners/banner-1.png">
-              <source media="(max-width: 767px)" srcset="/images/banners/banner-1.png">
-              <source media="(max-width: 991px)" srcset="/images/banners/banner-1.png">
-              <source media="(max-width: 1399px)" srcset="/images/banners/banner-1.png">
-              <source media="(max-width: 1919px)" srcset="/images/banners/banner-1.png">
-              <img 
-                src="/cdn-cgi/image/width=1920,fit=cover,format=auto,quality=85/images/banners/banner-1.png"
-                alt="PLANAC Distribuidora - Forros e Divisórias de qualidade"
-                class="hero__image"
-                width="2198"
-                height="800"
-                loading="eager"
-                fetchpriority="high"
-                decoding="async">
-            </picture>
-            <div class="hero__overlay" aria-hidden="true"></div>
-            <div class="hero__content">
-              <h1 class="hero__title">PLANAC Distribuidora</h1>
-              <p class="hero__subtitle">Forros, Divisórias e Drywall com qualidade e preço justo em Londrina e região</p>
-              <a href="#contato" class="hero__cta">
-                Solicite um Orçamento
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/>
-                </svg>
-              </a>
-            </div>
-          </article>
-          
-          <!-- Slide 2 -->
-          <article class="hero__slide" role="group" aria-roledescription="slide" aria-label="2 de 3" aria-hidden="true">
-            <picture>
-              <source media="(max-width: 575px)" srcset="/images/banners/banner-2.png">
-              <source media="(max-width: 767px)" srcset="/images/banners/banner-2.png">
-              <source media="(max-width: 991px)" srcset="/images/banners/banner-2.png">
-              <source media="(max-width: 1399px)" srcset="/images/banners/banner-2.png">
-              <source media="(max-width: 1919px)" srcset="/images/banners/banner-2.png">
-              <img 
-                src="/cdn-cgi/image/width=1920,fit=cover,format=auto,quality=85/images/banners/banner-2.png"
-                alt="Forros PVC e Gesso Acartonado - A melhor opção para sua obra"
-                class="hero__image"
-                width="2198"
-                height="800"
-                loading="lazy"
-                decoding="async">
-            </picture>
-            <div class="hero__overlay" aria-hidden="true"></div>
-            <div class="hero__content">
-              <h2 class="hero__title">Forros de Qualidade</h2>
-              <p class="hero__subtitle">PVC, Gesso Acartonado, Modular e muito mais para sua obra</p>
-              <a href="#servicos" class="hero__cta">
-                Ver Produtos
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/>
-                </svg>
-              </a>
-            </div>
-          </article>
-          
-          <!-- Slide 3 -->
-          <article class="hero__slide" role="group" aria-roledescription="slide" aria-label="3 de 3" aria-hidden="true">
-            <picture>
-              <source media="(max-width: 575px)" srcset="/images/banners/banner-3.png">
-              <source media="(max-width: 767px)" srcset="/images/banners/banner-3.png">
-              <source media="(max-width: 991px)" srcset="/images/banners/banner-3.png">
-              <source media="(max-width: 1399px)" srcset="/images/banners/banner-3.png">
-              <source media="(max-width: 1919px)" srcset="/images/banners/banner-3.png">
-              <img 
-                src="/cdn-cgi/image/width=1920,fit=cover,format=auto,quality=85/images/banners/banner-3.png"
-                alt="Divisórias e Isolamento Térmico - Soluções completas"
-                class="hero__image"
-                width="2198"
-                height="800"
-                loading="lazy"
-                decoding="async">
-            </picture>
-            <div class="hero__overlay" aria-hidden="true"></div>
-            <div class="hero__content">
-              <h2 class="hero__title">Soluções Completas</h2>
-              <p class="hero__subtitle">Divisórias, Isolamento Térmico e Acústico para sua construção</p>
-              <a href="#servicos" class="hero__cta">
-                Conheça Nossos Produtos
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/>
-                </svg>
-              </a>
-            </div>
-          </article>
-          
-        </div>
-        
-        <!-- Controles do Carrossel -->
-        <button class="hero__arrow hero__arrow--prev" type="button" aria-label="Slide anterior">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-          </svg>
-        </button>
-        <button class="hero__arrow hero__arrow--next" type="button" aria-label="Próximo slide">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-          </svg>
-        </button>
-        
-        <!-- Indicadores -->
-        <div class="hero__controls" role="tablist" aria-label="Slides do carrossel">
-          <button class="hero__dot hero__dot--active" type="button" role="tab" aria-selected="true" aria-label="Slide 1"></button>
-          <button class="hero__dot" type="button" role="tab" aria-selected="false" aria-label="Slide 2"></button>
-          <button class="hero__dot" type="button" role="tab" aria-selected="false" aria-label="Slide 3"></button>
-        </div>
-      </div>
-    </section>
-    
-    <!-- ========== SERVIÇOS / CARDS ========== -->
-    <section id="servicos" class="services section" aria-labelledby="services-title">
-      <div class="container">
-        <h2 id="services-title" class="section-title">Nossos Produtos</h2>
-        
-        <div class="services__grid">
-          
-          <!-- Card: Forro PVC Branco -->
-          <article class="service-card" data-animate>
-            <div class="service-card__image-wrapper">
-              <img 
-                src="/cdn-cgi/image/width=600,height=400,fit=cover,format=auto,quality=80/images/servicos/pvc-branco.png" 
-                alt="Forro PVC Branco"
-                class="service-card__image"
-                width="400"
-                height="250"
-                loading="lazy"
-                decoding="async">
-              <div class="service-card__overlay"></div>
-            </div>
-            <div class="service-card__content">
-              <h3 class="service-card__title">Forro PVC Branco</h3>
-              <p class="service-card__description">Forro prático, resistente à umidade e fácil instalação.</p>
-              <a href="/servicos/pvc-branco" class="service-card__link">
-                Saiba mais
-                <svg class="service-card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/>
-                </svg>
-              </a>
-            </div>
-          </article>
-          
-          <!-- Card: Forro PVC Amadeirado -->
-          <article class="service-card" data-animate>
-            <div class="service-card__image-wrapper">
-              <img 
-                src="/cdn-cgi/image/width=600,height=400,fit=cover,format=auto,quality=80/images/servicos/pvc-amadeirado.png" 
-                alt="Forro PVC Amadeirado"
-                class="service-card__image"
-                width="400"
-                height="250"
-                loading="lazy"
-                decoding="async">
-              <div class="service-card__overlay"></div>
-            </div>
-            <div class="service-card__content">
-              <h3 class="service-card__title">Forro PVC Amadeirado</h3>
-              <p class="service-card__description">Visual elegante de madeira com a praticidade do PVC.</p>
-              <a href="/servicos/pvc-amadeirado" class="service-card__link">
-                Saiba mais
-                <svg class="service-card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/>
-                </svg>
-              </a>
-            </div>
-          </article>
-          
-          <!-- Card: Forro Gesso Acartonado -->
-          <article class="service-card" data-animate>
-            <div class="service-card__image-wrapper">
-              <img 
-                src="/cdn-cgi/image/width=600,height=400,fit=cover,format=auto,quality=80/images/servicos/forro-de-gesso-acartonado.png" 
-                alt="Forro Gesso Acartonado"
-                class="service-card__image"
-                width="400"
-                height="250"
-                loading="lazy"
-                decoding="async">
-              <div class="service-card__overlay"></div>
-            </div>
-            <div class="service-card__content">
-              <h3 class="service-card__title">Forro Gesso Acartonado</h3>
-              <p class="service-card__description">Acabamento perfeito e versátil para projetos modernos.</p>
-              <a href="/servicos/forro-de-gesso-acartonado" class="service-card__link">
-                Saiba mais
-                <svg class="service-card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/>
-                </svg>
-              </a>
-            </div>
-          </article>
-          
-          <!-- Card: Divisória Drywall -->
-          <article class="service-card" data-animate>
-            <div class="service-card__image-wrapper">
-              <img 
-                src="/cdn-cgi/image/width=600,height=400,fit=cover,format=auto,quality=80/images/servicos/parede-de-gesso-acartonado-drywall.png" 
-                alt="Divisória Drywall"
-                class="service-card__image"
-                width="400"
-                height="250"
-                loading="lazy"
-                decoding="async">
-              <div class="service-card__overlay"></div>
-            </div>
-            <div class="service-card__content">
-              <h3 class="service-card__title">Divisória Drywall</h3>
-              <p class="service-card__description">Paredes internas rápidas, limpas e com ótimo custo-benefício.</p>
-              <a href="/servicos/parede-de-gesso-acartonado-drywall" class="service-card__link">
-                Saiba mais
-                <svg class="service-card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/>
-                </svg>
-              </a>
-            </div>
-          </article>
-          
-          <!-- Card: Lã de Vidro -->
-          <article class="service-card" data-animate>
-            <div class="service-card__image-wrapper">
-              <img 
-                src="/cdn-cgi/image/width=600,height=400,fit=cover,format=auto,quality=80/images/servicos/la-de-vidro.png" 
-                alt="Lã de Vidro"
-                class="service-card__image"
-                width="400"
-                height="250"
-                loading="lazy"
-                decoding="async">
-              <div class="service-card__overlay"></div>
-            </div>
-            <div class="service-card__content">
-              <h3 class="service-card__title">Lã de Vidro</h3>
-              <p class="service-card__description">Isolamento térmico e acústico de alta performance.</p>
-              <a href="/servicos/la-de-vidro" class="service-card__link">
-                Saiba mais
-                <svg class="service-card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/>
-                </svg>
-              </a>
-            </div>
-          </article>
-          
-          <!-- Card: Manta Térmica -->
-          <article class="service-card" data-animate>
-            <div class="service-card__image-wrapper">
-              <img 
-                src="/cdn-cgi/image/width=600,height=400,fit=cover,format=auto,quality=80/images/servicos/manta-termica-aluminizada.png" 
-                alt="Manta Térmica"
-                class="service-card__image"
-                width="400"
-                height="250"
-                loading="lazy"
-                decoding="async">
-              <div class="service-card__overlay"></div>
-            </div>
-            <div class="service-card__content">
-              <h3 class="service-card__title">Manta Térmica</h3>
-              <p class="service-card__description">Proteção térmica eficiente para coberturas e paredes.</p>
-              <a href="/servicos/manta-termica-aluminizada" class="service-card__link">
-                Saiba mais
-                <svg class="service-card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/>
-                </svg>
-              </a>
-            </div>
-          </article>
-          
-          <!-- Card: ForroVid -->
-          <article class="service-card" data-animate>
-            <div class="service-card__image-wrapper">
-              <img 
-                src="/cdn-cgi/image/width=600,height=400,fit=cover,format=auto,quality=80/images/servicos/forrovid.png" 
-                alt="ForroVid"
-                class="service-card__image"
-                width="400"
-                height="250"
-                loading="lazy"
-                decoding="async">
-              <div class="service-card__overlay"></div>
-            </div>
-            <div class="service-card__content">
-              <h3 class="service-card__title">ForroVid</h3>
-              <p class="service-card__description">Forro vinílico resistente e de fácil manutenção.</p>
-              <a href="/servicos/forrovid" class="service-card__link">
-                Saiba mais
-                <svg class="service-card__link-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/>
-                </svg>
-              </a>
-            </div>
-          </article>
-          
-    
-    <!-- ========== SOBRE ========== -->
-    <section id="sobre" class="about section" aria-labelledby="about-title">
-      <div class="container">
-        <div class="about__grid">
-          <div class="about__content" data-animate>
-            <h2 id="about-title" class="about__title">Sobre a PLANAC Distribuidora</h2>
-            <p class="about__text">
-              Desde 2011, a PLANAC Distribuidora é referência em forros, divisórias e materiais para construção em Londrina e região. Somos distribuidores autorizados das melhores marcas do mercado, como Plasbil e Gypsum.
-            </p>
-            <p class="about__text">
-              Nossa missão é oferecer produtos de qualidade com preço justo e atendimento personalizado. Trabalhamos com profissionais da construção civil, arquitetos, engenheiros e consumidores finais.
-            </p>
-            
-            <div class="about__features">
-              <div class="about__feature">
-                <div class="about__feature-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                  </svg>
-                </div>
-                <span class="about__feature-text">+13 Anos de Experiência</span>
-              </div>
-              
-              <div class="about__feature">
-                <div class="about__feature-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                  </svg>
-                </div>
-                <span class="about__feature-text">Distribuidor Autorizado</span>
-              </div>
-              
-              <div class="about__feature">
-                <div class="about__feature-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                  </svg>
-                </div>
-                <span class="about__feature-text">Entrega em Toda Região</span>
-              </div>
-              
-              <div class="about__feature">
-                <div class="about__feature-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                  </svg>
-                </div>
-                <span class="about__feature-text">Orçamento Grátis</span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="about__image-wrapper" data-animate>
-            <img 
-              src="/cdn-cgi/image/width=600,height=400,fit=cover,format=auto,quality=80/images/servicos/forro-de-gesso-acartonado.png" 
-              alt="Equipe PLANAC Distribuidora"
-              class="about__image"
-              width="600"
-              height="450"
-              loading="lazy"
-              decoding="async">
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- ========== CONTATO ========== -->
-    <section id="contato" class="contact section" aria-labelledby="contact-title">
-      <div class="container">
-        <h2 id="contact-title" class="section-title">Entre em Contato</h2>
-        
-        <div class="contact__grid">
-          <!-- Informações de Contato -->
-          <div class="contact__info" data-animate>
-            <div class="contact__info-item">
-              <div class="contact__info-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                </svg>
-              </div>
-              <div>
-                <p class="contact__info-label">Telefone / WhatsApp</p>
-                <p class="contact__info-value">
-                  <a href="tel:+5543984182582">(43) 98418-2582</a>
-                </p>
-              </div>
-            </div>
-            
-            <div class="contact__info-item">
-              <div class="contact__info-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                </svg>
-              </div>
-              <div>
-                <p class="contact__info-label">E-mail</p>
-                <p class="contact__info-value">
-                  <a href="mailto:contato@planacdistribuidora.com.br">contato@planacdistribuidora.com.br</a>
-                </p>
-              </div>
-            </div>
-            
-            <div class="contact__info-item">
-              <div class="contact__info-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                </svg>
-              </div>
-              <div>
-                <p class="contact__info-label">Endereço</p>
-                <p class="contact__info-value">Londrina - PR</p>
-              </div>
-            </div>
-            
-            <div class="contact__info-item">
-              <div class="contact__info-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-                </svg>
-              </div>
-              <div>
-                <p class="contact__info-label">Horário</p>
-                <p class="contact__info-value">Seg a Sex: 8h às 18h</p>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Formulário -->
-          <form id="contact-form" class="contact__form" data-animate>
-            <div class="form__group">
-              <label for="nome" class="form__label">Nome *</label>
-              <input 
-                type="text" 
-                id="nome" 
-                name="nome" 
-                class="form__input" 
-                placeholder="Seu nome completo"
-                required
-                autocomplete="name">
-            </div>
-            
-            <div class="form__group">
-              <label for="telefone" class="form__label">Telefone *</label>
-              <input 
-                type="tel" 
-                id="telefone" 
-                name="telefone" 
-                class="form__input" 
-                placeholder="(00) 00000-0000"
-                required
-                autocomplete="tel">
-            </div>
-            
-            <div class="form__group">
-              <label for="email" class="form__label">E-mail</label>
-              <input 
-                type="email" 
-                id="email" 
-                name="email" 
-                class="form__input" 
-                placeholder="seu@email.com"
-                autocomplete="email">
-            </div>
-            
-            <div class="form__group">
-              <label for="mensagem" class="form__label">Mensagem *</label>
-              <textarea 
-                id="mensagem" 
-                name="mensagem" 
-                class="form__textarea" 
-                placeholder="Descreva o que você precisa..."
-                required></textarea>
-            </div>
-            
-            <button type="submit" class="form__submit">
-              Enviar pelo WhatsApp
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-              </svg>
-            </button>
-          </form>
-        </div>
-      </div>
-    </section>
-    
-  </main>
-  
-  <!-- ========== FOOTER DESKTOP ========== -->
-  <footer class="footer" role="contentinfo">
-    <div class="container">
-      <div class="footer__grid">
-        <!-- Brand -->
-        <div class="footer__brand">
-          <img 
-            src="/images/logo/logo-planac.svg" 
-            alt="PLANAC Distribuidora" 
-            class="footer__logo"
-            width="180"
-            height="55"
-            loading="lazy">
-          <p class="footer__description">
-            Distribuidor autorizado de forros, divisórias e materiais para construção em Londrina e região. Qualidade e preço justo desde 2011.
-          </p>
-          <div class="footer__social">
-            <a href="https://www.instagram.com/planacdistribuidora" target="_blank" rel="noopener noreferrer" class="footer__social-link" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-              </svg>
-            </a>
-            <a href="https://api.whatsapp.com/send/?phone=5543984182582" target="_blank" rel="noopener noreferrer" class="footer__social-link" aria-label="WhatsApp">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-              </svg>
-            </a>
-          </div>
-        </div>
-        
-        <!-- Links Rápidos -->
-        <div class="footer__column">
-          <h3 class="footer__title">Produtos</h3>
-          <ul class="footer__links">
-            <li><a href="/servicos/pvc-branco" class="footer__link">Forro PVC</a></li>
-            <li><a href="/servicos/forro-de-gesso-acartonado" class="footer__link">Gesso Acartonado</a></li>
-            <li><a href="/servicos/parede-de-gesso-acartonado-drywall" class="footer__link">Divisórias</a></li>
-            <li><a href="/servicos/la-de-vidro" class="footer__link">Isolamento</a></li>
-          </ul>
-        </div>
-        
-        <!-- Institucional -->
-        <div class="footer__column">
-          <h3 class="footer__title">Institucional</h3>
-          <ul class="footer__links">
-            <li><a href="#sobre" class="footer__link">Sobre Nós</a></li>
-            <li><a href="#contato" class="footer__link">Contato</a></li>
-            <li><a href="#servicos" class="footer__link">Produtos</a></li>
-          </ul>
-        </div>
-        
-        <!-- Contato -->
-        <div class="footer__column">
-          <h3 class="footer__title">Contato</h3>
-          <div class="footer__contact-item">
-            <svg class="footer__contact-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-            </svg>
-            <span class="footer__contact-text">(43) 98418-2582</span>
-          </div>
-          <div class="footer__contact-item">
-            <svg class="footer__contact-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-            </svg>
-            <span class="footer__contact-text">Londrina - PR</span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="footer__bottom">
-        <p class="footer__copyright">
-          © 2024 PLANAC Distribuidora. Todos os direitos reservados.
-        </p>
-      </div>
-    </div>
-  </footer>
-  
-  <!-- ========== FOOTER MOBILE (Barra Fixa) ========== -->
-  <div class="footer-mobile" role="navigation" aria-label="Ações rápidas">
-    <!-- Botão Ligar -->
-    <a href="tel:+5543984182582" class="footer-mobile__btn footer-mobile__btn--phone">
-      <svg class="footer-mobile__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-      </svg>
-      <span class="footer-mobile__label">Ligar</span>
-    </a>
-    
-    <!-- Botão Localização -->
-    <a href="https://www.google.com/maps/search/?api=1&query=PLANAC+Distribuidora+Londrina+PR" 
-       target="_blank" 
-       rel="noopener noreferrer"
-       class="footer-mobile__btn footer-mobile__btn--location">
-      <svg class="footer-mobile__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-      </svg>
-      <span class="footer-mobile__label">Localização</span>
-    </a>
-    
-    <!-- Botão WhatsApp -->
-    <a href="https://api.whatsapp.com/send/?phone=5543984182582&text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento." 
-       target="_blank" 
-       rel="noopener noreferrer"
-       class="footer-mobile__btn footer-mobile__btn--whatsapp">
-      <svg class="footer-mobile__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-      </svg>
-      <span class="footer-mobile__label">WhatsApp</span>
-    </a>
-  </div>
-  
-  <!-- ========== JavaScript ========== -->
-  <script src="/js/main.js" defer></script>
-  <!-- Botões Flutuantes Desktop -->
-  <div class="floating-buttons">
-    <a href="https://www.google.com/maps/search/?api=1&query=PLANAC+Distribuidora+Londrina+PR" 
-       class="floating-btn floating-btn--location" 
-       target="_blank" 
-       rel="noopener noreferrer" 
-       data-tooltip="Nossa Localização" 
-       aria-label="Ver localização no Google Maps">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-      </svg>
-    </a>
-    <a href="https://api.whatsapp.com/send/?phone=5543984182582&text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20PLANAC%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es." 
-       class="floating-btn floating-btn--whatsapp" 
-       target="_blank" 
-       rel="noopener noreferrer" 
-       data-tooltip="Fale pelo WhatsApp" 
-       aria-label="Iniciar conversa no WhatsApp">
-      <span class="pulse-ring"></span>
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-      </svg>
-    </a>
-  </div>
+    <!-- Header Container -->
+    <div id="header-container"></div>
 
+    <!-- Banner -->
+    <section class="banner" id="inicio">
+        <div class="banner-content">
+            <h1>Forros e Divisórias</h1>
+            <p>Precisando de Materiais ou Serviços?<br>Fale conosco Agora!</p>
+            <a href="https://api.whatsapp.com/send/?phone=5543984182582&text=Olá,%20Planac!%20Gostaria%20de%20solicitar%20um%20orçamento." target="_blank" class="btn-primary">
+                Solicite um orçamento
+            </a>
+        </div>
+    </section>
+
+    <!-- Cards Section -->
+    <section class="cards-section">
+        <div class="container">
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">
+                        <img src="https://painel-planac.codiehost.com.br/uploads/133465396479346008.png" alt="ABNT">
+                    </div>
+                    <h4>NORMATIZAÇÃO ABNT DOS MATERIAIS</h4>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <img src="https://painel-planac.codiehost.com.br/uploads/133465396723233554.png" alt="Produtos">
+                    </div>
+                    <h4>PRODUTOS A PRONTA ENTREGA</h4>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <img src="https://painel-planac.codiehost.com.br/uploads/133465396865785915.png" alt="Agilidade">
+                    </div>
+                    <h4>AGILIDADE DE ATENDIMENTO</h4>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <img src="https://painel-planac.codiehost.com.br/uploads/133465396975722242.png" alt="Pagamento">
+                    </div>
+                    <h4>FLEXIBILIDADE DE PAGAMENTO</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Divisórias Section -->
+    <section class="services-section" id="divisorias">
+        <div class="container">
+            <h2 class="section-title">Divisórias</h2>
+            <div class="services-grid">
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133603401096191514.jpg')">
+                    <div class="service-content">
+                        <h2>Divisória Naval</h2>
+                        <h6>Resistência extrema</h6>
+                        <a href="divisoria-naval-page.html" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133608846438594959.png')">
+                    <div class="service-content">
+                        <h2>Divisória de Gesso Acartonado</h2>
+                        <h6>Versatilidade e rapidez</h6>
+                        <a href="drywall-divisoria-page.html" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Drywall Section -->
+    <section class="services-section" id="drywall" style="background: #f6f8fb;">
+        <div class="container">
+            <h2 class="section-title">Drywall</h2>
+            <div class="services-grid">
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133471436401074071.jpg')">
+                    <div class="service-content">
+                        <h2>Paredes Drywall</h2>
+                        <h6>Divisórias rápidas e versáteis</h6>
+                        <a href="/servicos/parede-de-gesso-acartonado-drywall/" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133737433241995141.jpg')">
+                    <div class="service-content">
+                        <h2>Teto Drywall</h2>
+                        <h6>Acabamento perfeito</h6>
+                        <a href="teto-drywall.html" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Forros Section -->
+    <section class="services-section" id="forros">
+        <div class="container">
+            <h2 class="section-title">Forros</h2>
+            <div class="services-grid">
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133737433241995141.jpg')">
+                    <div class="service-content">
+                        <h2>Gesso Acartonado</h2>
+                        <h6>Drywall é para você!</h6>
+                        <a href="/servicos/forro-de-gesso-acartonado/" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133471437270525667.jpg')">
+                    <div class="service-content">
+                        <h2>PVC Branco</h2>
+                        <h6>Resistência e beleza</h6>
+                        <a href="pvc-branco-page.html" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133471437270525667.jpg')">
+                    <div class="service-content">
+                        <h2>PVC Amadeirado</h2>
+                        <h6>Beleza natural</h6>
+                        <a href="pvc-amadeirado-page.html" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+                <div class="service-card" style="background-image: url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600')">
+                    <div class="service-content">
+                        <h2>Forro Vinílico REVID</h2>
+                        <h6>Alta tecnologia Plasbil</h6>
+                        <a href="/servicos/forro-vinilico-revid/" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Forros Modulares Section -->
+    <section class="services-section" id="forros-modulares" style="background: #f6f8fb;">
+        <div class="container">
+            <h2 class="section-title">Forros Modulares</h2>
+            <div class="services-grid">
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133471436835853780.jpg')">
+                    <div class="service-content">
+                        <h2>Gesso Modular</h2>
+                        <h6>Elegância modular</h6>
+                        <a href="forro-de-gesso-modular.html" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133471437270525667.jpg')">
+                    <div class="service-content">
+                        <h2>PVC Modular</h2>
+                        <h6>Praticidade em placas</h6>
+                        <a href="pvc-modular-page.html" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133471437270525667.jpg')">
+                    <div class="service-content">
+                        <h2>Forrovid</h2>
+                        <h6>Alta durabilidade</h6>
+                        <a href="forrovid-page.html" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133471437270525667.jpg')">
+                    <div class="service-content">
+                        <h2>Mineral</h2>
+                        <h6>Resistência e acústica</h6>
+                        <a href="mineral-page.html" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133471437270525667.jpg')">
+                    <div class="service-content">
+                        <h2>Isopor</h2>
+                        <h6>Leveza e isolamento</h6>
+                        <a href="isopor-page.html" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Termoacústica Section -->
+    <section class="services-section" id="termoacustica">
+        <div class="container">
+            <h2 class="section-title">Termoacústica</h2>
+            <div class="services-grid">
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133471437270525667.jpg')">
+                    <div class="service-content">
+                        <h2>Lã de Rocha</h2>
+                        <h6>Isolamento térmico e acústico</h6>
+                        <a href="la-rocha-page.html" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133471437270525667.jpg')">
+                    <div class="service-content">
+                        <h2>Lã de Vidro</h2>
+                        <h6>Máximo isolamento</h6>
+                        <a href="la-vidro-page.html" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133471437270525667.jpg')">
+                    <div class="service-content">
+                        <h2>Lã de PET</h2>
+                        <h6>Sustentável e eficiente</h6>
+                        <a href="la-pet-page.html" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133471437270525667.jpg')">
+                    <div class="service-content">
+                        <h2>Manta Térmica</h2>
+                        <h6>Proteção térmica eficiente</h6>
+                        <a href="/servicos/manta-termica-aluminizada/" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kit Portas Section -->
+    <section class="services-section" id="portas" style="background: #f6f8fb;">
+        <div class="container">
+            <h2 class="section-title">Kit Portas</h2>
+            <div class="services-grid">
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133471437270525667.jpg')">
+                    <div class="service-content">
+                        <h2>Kit Porta de Giro</h2>
+                        <h6>Tradicional e prático</h6>
+                        <a href="kit-porta.html" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133471437270525667.jpg')">
+                    <div class="service-content">
+                        <h2>Kit Porta de Correr</h2>
+                        <h6>Economia de espaço</h6>
+                        <a href="kit-porta-correr.html" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133471437270525667.jpg')">
+                    <div class="service-content">
+                        <h2>Portas Sanfonadas</h2>
+                        <h6>Versatilidade total</h6>
+                        <a href="portas-sanfonadas.html" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rodapés Section -->
+    <section class="services-section" id="rodapes">
+        <div class="container">
+            <h2 class="section-title">Rodapés</h2>
+            <div class="services-grid">
+                <div class="service-card" style="background-image: url('https://painel-planac.codiehost.com.br/uploads/133471437270525667.jpg')">
+                    <div class="service-content">
+                        <h2>Rodapés</h2>
+                        <h6>Acabamento perfeito para sua obra</h6>
+                        <a href="rodapes.html" class="btn-primary">Saiba Mais</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="sobre">
+        <div class="container">
+            <div class="about-container">
+                <div class="about-text">
+                    <h5>A Planac</h5>
+                    <h2>Sobre Nós</h2>
+                    <p><strong>A PLANAC: Empresa com PROPÓSITO!</strong></p>
+                    <p>A PLANAC Acabamentos foi fundada em 04 de fevereiro de 2011 a partir de um SONHO meu Rodrigo e da minha esposa Deyse.</p>
+                    <p>O nome PLANAC nos foi revelado neste sonho, e vem da junção das palavras PLANejamento & ACabamento. Dois conceitos importantíssimos para construções e reformas de QUALIDADE.</p>
+                    <p>Atuar como DISTRIBUIDOR nos possibilitou a venda direta de produtos a clientes FÍSICOS e JURÍDICOS, com preços de ATACADO além de abrir acesso a bons PROFISSIONAIS para indicação na montagem.</p>
+                    <p><strong>Se você procura produtos de QUALIDADE, atendimento ÁGIL e pagamento FLEXÍVEL</strong></p>
+                    <p><strong>A PLANAC DISTRIBUIDORA é o lugar CERTO!</strong></p>
+                </div>
+                <div class="values-cards">
+                    <div class="value-card">
+                        <h4>Missão</h4>
+                        <p>Superar as expectativas de cada cliente através do atendimento e produtos certificados!</p>
+                    </div>
+                    <div class="value-card">
+                        <h4>Visão</h4>
+                        <p>Através do posicionamento legal e consistente no mercado, sermos a mais completa distribuidora de materiais do Brasil.</p>
+                    </div>
+                    <div class="value-card">
+                        <h4>Valores</h4>
+                        <p>Prezamos o respeito, ética e clareza nos relacionamentos pessoais e comerciais.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <!-- WhatsApp Float Container -->
+    <div id="whatsapp-float-container"></div>
+
+    <script>
+        // Form handling
+        function handleSubmit(e) {
+            e.preventDefault();
+            const nome = document.getElementById('nome').value;
+            const telefone = document.getElementById('telefone').value;
+            const mensagem = document.getElementById('mensagem').value;
+            
+            const whatsappMsg = `Olá! Vim pelo site.\n\nNome: ${nome}\nTelefone: ${telefone}\nMensagem: ${mensagem}`;
+            const whatsappURL = `https://api.whatsapp.com/send/?phone=5543984182582&text=${encodeURIComponent(whatsappMsg)}`;
+            
+            window.open(whatsappURL, '_blank');
+            e.target.reset();
+            alert('Obrigado! Você será redirecionado para o WhatsApp.');
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Phone mask
+        document.getElementById('telefone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0, 11);
+            
+            if (value.length > 10) {
+                value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+            } else if (value.length > 6) {
+                value = value.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
+            } else if (value.length > 2) {
+                value = value.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
+            } else {
+                value = value.replace(/^(\d*)/, '($1');
+            }
+            
+            e.target.value = value;
+        });
+
+        // Mobile menu (simplified) - Será inicializado pelo load-components.js
+    </script>
+
+    <!-- Load Header and Footer Components -->
+    <script src="load-components.js?v=2"></script>
 </body>
 </html>
