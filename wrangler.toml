@@ -14,7 +14,7 @@ index_name = "developers-memory"
 [[d1_databases]]
 binding = "DB"
 database_name = "developers-db"
-database_id = "" # Será preenchido após criar o banco
+database_id = "f546b0a4-a939-4d40-87d9-ace5a7323c51"
 
 # Secrets (configurar via: wrangler secret put ANTHROPIC_API_KEY)
 # ANTHROPIC_API_KEY = "sk-ant-..."
