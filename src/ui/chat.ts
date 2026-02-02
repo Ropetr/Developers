@@ -258,6 +258,48 @@ export function getChatHTML(): string {
     .knowledge-empty { text-align: center; padding: 20px; color: #444; font-size: 13px; }
     .knowledge-count { font-size: 11px; color: #6366f1; margin-left: 6px; }
 
+    /* PROJECT LOCAL */
+    .sidebar-section { border-top: 1px solid #2a2a2a; }
+    .sidebar-section-header {
+      padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;
+    }
+    .sidebar-section-header h3 { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+    .btn-connect-folder {
+      background: #22c55e; color: #fff; border: none; border-radius: 6px;
+      padding: 4px 10px; font-size: 11px; cursor: pointer; font-weight: 600;
+    }
+    .btn-connect-folder:hover { background: #16a34a; }
+    .btn-disconnect-folder {
+      background: transparent; color: #ef4444; border: 1px solid #ef4444; border-radius: 6px;
+      padding: 3px 8px; font-size: 10px; cursor: pointer;
+    }
+    .btn-disconnect-folder:hover { background: rgba(239,68,68,0.1); }
+    .project-info {
+      padding: 0 16px 8px; font-size: 11px; color: #6366f1; display: flex; align-items: center; gap: 6px;
+    }
+    .project-info .folder-name { font-weight: 600; }
+    .file-tree { padding: 0 8px 12px; overflow-y: auto; max-height: 40vh; }
+    .ft-item {
+      display: flex; align-items: center; gap: 6px; padding: 3px 8px; border-radius: 4px;
+      cursor: pointer; font-size: 12px; color: #aaa; user-select: none;
+    }
+    .ft-item:hover { background: #1a1a1a; }
+    .ft-item.selected { background: rgba(99,102,241,0.15); color: #c7d2fe; }
+    .ft-item .ft-icon { font-size: 11px; width: 16px; text-align: center; flex-shrink: 0; }
+    .ft-item .ft-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ft-dir > .ft-name { color: #e0e0e0; font-weight: 500; }
+    .ft-children { padding-left: 16px; }
+    .ft-children.collapsed { display: none; }
+    .project-selected-count {
+      padding: 8px 16px; font-size: 11px; color: #888; border-top: 1px solid #2a2a2a;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .project-selected-count span { color: #6366f1; font-weight: 600; }
+    .btn-clear-sel {
+      background: none; border: none; color: #666; cursor: pointer; font-size: 11px; text-decoration: underline;
+    }
+    .btn-clear-sel:hover { color: #e0e0e0; }
+
     /* CHAT */
     .chat-area { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
     .message {
@@ -336,6 +378,15 @@ export function getChatHTML(): string {
     </div>
     <div class="sessions-list" id="sessionsList">
       <div class="sessions-empty">Nenhuma conversa ainda</div>
+    </div>
+    <div class="sidebar-section" id="projectSection">
+      <div class="sidebar-section-header">
+        <h3>Projeto Local</h3>
+        <button class="btn-connect-folder" id="btnConnectFolder" onclick="connectFolder()">Conectar Pasta</button>
+      </div>
+      <div id="projectInfo" style="display:none"></div>
+      <div class="file-tree" id="fileTree"></div>
+      <div class="project-selected-count" id="selectedCount" style="display:none"></div>
     </div>
   </aside>
 
@@ -729,6 +780,13 @@ export function getChatHTML(): string {
       sendBtn.disabled = true;
       messageInput.disabled = true;
       showTyping();
+
+      // Read selected project files and add as text attachments
+      var projectFiles = await readSelectedFiles();
+      projectFiles.forEach(function(pf) {
+        attachmentsToSend.push({ type: 'text', name: pf.name, data: pf.content });
+      });
+
       try {
         var body = { content: content };
         if (sessionId) body.session_id = sessionId;
@@ -892,6 +950,152 @@ export function getChatHTML(): string {
           if (el && counts[id]) el.textContent = ' (' + counts[id] + ')';
         });
       } catch(e) {}
+    }
+
+    // ---- PROJECT LOCAL ----
+    var projectHandle = null;
+    var projectTree = [];
+    var selectedFiles = {};
+    var IGNORE_DIRS = ['node_modules','.git','.next','dist','build','.cache','__pycache__','.vscode','.idea'];
+    var TEXT_EXTS = ['.txt','.md','.js','.ts','.jsx','.tsx','.py','.json','.css','.html','.sql','.csv','.xml','.yaml','.yml','.toml','.cfg','.ini','.sh','.bat','.env','.gitignore','.svelte','.vue','.php','.rb','.go','.rs','.java','.kt','.swift','.c','.cpp','.h'];
+
+    async function connectFolder() {
+      if (!window.showDirectoryPicker) {
+        alert('Seu navegador nao suporta File System Access API. Use Chrome ou Edge.');
+        return;
+      }
+      try {
+        projectHandle = await window.showDirectoryPicker({ mode: 'read' });
+        selectedFiles = {};
+        projectTree = await readDirRecursive(projectHandle, '', 0);
+        renderProjectUI();
+      } catch(e) {
+        if (e.name !== 'AbortError') alert('Erro: ' + e.message);
+      }
+    }
+
+    function disconnectFolder() {
+      projectHandle = null;
+      projectTree = [];
+      selectedFiles = {};
+      document.getElementById('projectInfo').style.display = 'none';
+      document.getElementById('fileTree').innerHTML = '';
+      document.getElementById('selectedCount').style.display = 'none';
+      document.getElementById('btnConnectFolder').textContent = 'Conectar Pasta';
+      document.getElementById('btnConnectFolder').className = 'btn-connect-folder';
+      document.getElementById('btnConnectFolder').onclick = connectFolder;
+    }
+
+    async function readDirRecursive(dirHandle, path, depth) {
+      if (depth > 4) return [];
+      var items = [];
+      for await (var entry of dirHandle.values()) {
+        if (entry.kind === 'directory') {
+          if (IGNORE_DIRS.indexOf(entry.name) >= 0) continue;
+          var children = await readDirRecursive(entry, path + entry.name + '/', depth + 1);
+          items.push({ name: entry.name, path: path + entry.name, kind: 'dir', handle: entry, children: children });
+        } else {
+          items.push({ name: entry.name, path: path + entry.name, kind: 'file', handle: entry });
+        }
+      }
+      items.sort(function(a, b) {
+        if (a.kind !== b.kind) return a.kind === 'dir' ? -1 : 1;
+        return a.name.localeCompare(b.name);
+      });
+      return items;
+    }
+
+    function renderProjectUI() {
+      document.getElementById('projectInfo').style.display = 'flex';
+      document.getElementById('projectInfo').innerHTML =
+        '<span class="folder-name">' + escapeHtml(projectHandle.name) + '</span>';
+      document.getElementById('btnConnectFolder').textContent = 'Desconectar';
+      document.getElementById('btnConnectFolder').className = 'btn-disconnect-folder';
+      document.getElementById('btnConnectFolder').onclick = disconnectFolder;
+      document.getElementById('fileTree').innerHTML = renderTreeHTML(projectTree);
+      updateSelectedCount();
+    }
+
+    function renderTreeHTML(items) {
+      return items.map(function(item) {
+        if (item.kind === 'dir') {
+          return '<div>'
+            + '<div class="ft-item ft-dir" onclick="toggleDir(this)">'
+            + '<span class="ft-icon">&#9660;</span><span class="ft-name">' + escapeHtml(item.name) + '</span></div>'
+            + '<div class="ft-children">' + renderTreeHTML(item.children) + '</div></div>';
+        }
+        var sel = selectedFiles[item.path] ? ' selected' : '';
+        return '<div class="ft-item' + sel + '" data-path="' + escapeHtml(item.path) + '" onclick="toggleFileSelect(this, \\'' + escapeHtml(item.path).replace(/'/g, "\\\\'") + '\\')">'
+          + '<span class="ft-icon">&#9679;</span><span class="ft-name">' + escapeHtml(item.name) + '</span></div>';
+      }).join('');
+    }
+
+    function toggleDir(el) {
+      var children = el.nextElementSibling;
+      if (children) {
+        children.classList.toggle('collapsed');
+        var icon = el.querySelector('.ft-icon');
+        if (children.classList.contains('collapsed')) icon.innerHTML = '&#9654;';
+        else icon.innerHTML = '&#9660;';
+      }
+    }
+
+    function toggleFileSelect(el, path) {
+      if (selectedFiles[path]) {
+        delete selectedFiles[path];
+        el.classList.remove('selected');
+      } else {
+        selectedFiles[path] = true;
+        el.classList.add('selected');
+      }
+      updateSelectedCount();
+    }
+
+    function updateSelectedCount() {
+      var count = Object.keys(selectedFiles).length;
+      var countEl = document.getElementById('selectedCount');
+      if (count === 0) {
+        countEl.style.display = 'none';
+      } else {
+        countEl.style.display = 'flex';
+        countEl.innerHTML = '<span>' + count + ' arquivo(s)</span> incluidos no chat <button class="btn-clear-sel" onclick="clearFileSelection()">limpar</button>';
+      }
+    }
+
+    function clearFileSelection() {
+      selectedFiles = {};
+      document.querySelectorAll('.ft-item.selected').forEach(function(el) { el.classList.remove('selected'); });
+      updateSelectedCount();
+    }
+
+    async function readSelectedFiles() {
+      var paths = Object.keys(selectedFiles);
+      if (paths.length === 0 || !projectHandle) return [];
+      var results = [];
+      for (var i = 0; i < paths.length; i++) {
+        try {
+          var content = await readFileByPath(projectHandle, paths[i]);
+          if (content !== null) {
+            results.push({ name: paths[i], content: content });
+          }
+        } catch(e) { console.error('Erro lendo ' + paths[i], e); }
+      }
+      return results;
+    }
+
+    async function readFileByPath(dirHandle, filePath) {
+      var parts = filePath.split('/');
+      var current = dirHandle;
+      for (var i = 0; i < parts.length - 1; i++) {
+        current = await current.getDirectoryHandle(parts[i]);
+      }
+      var fileHandle = await current.getFileHandle(parts[parts.length - 1]);
+      var file = await fileHandle.getFile();
+      var ext = '.' + file.name.split('.').pop().toLowerCase();
+      if (TEXT_EXTS.indexOf(ext) >= 0 || file.type.startsWith('text/')) {
+        return await file.text();
+      }
+      return null;
     }
 
     // Init
