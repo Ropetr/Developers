@@ -2,6 +2,7 @@
 
 export interface Env {
   ANTHROPIC_API_KEY: string;
+  ENCRYPTION_SECRET: string;
   VECTORIZE: VectorizeIndex;
   DB: D1Database;
   ENVIRONMENT: string;

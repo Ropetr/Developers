@@ -28,14 +28,13 @@ export function getChatHTML(): string {
       justify-content: space-between;
     }
 
-    header h1 {
-      font-size: 20px;
-      font-weight: 600;
-      color: #fff;
-    }
+    header h1 { font-size: 20px; font-weight: 600; color: #fff; }
+    header h1 span { color: #6366f1; }
 
-    header h1 span {
-      color: #6366f1;
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
     }
 
     .agent-selector {
@@ -44,10 +43,7 @@ export function getChatHTML(): string {
       align-items: center;
     }
 
-    .agent-selector label {
-      font-size: 13px;
-      color: #888;
-    }
+    .agent-selector label { font-size: 13px; color: #888; }
 
     .agent-selector select {
       background: #2a2a2a;
@@ -59,11 +55,203 @@ export function getChatHTML(): string {
       cursor: pointer;
     }
 
-    .agent-selector select:focus {
-      outline: none;
-      border-color: #6366f1;
+    .agent-selector select:focus { outline: none; border-color: #6366f1; }
+
+    .settings-btn {
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
+      color: #888;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
+    .settings-btn:hover { border-color: #6366f1; color: #e0e0e0; }
+
+    .settings-btn .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ef4444;
+    }
+
+    .settings-btn .dot.connected { background: #22c55e; }
+
+    /* Modal overlay */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      border-bottom: 1px solid #2a2a2a;
+    }
+
+    .modal-header h2 { font-size: 18px; color: #fff; }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: #666;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 0 4px;
+    }
+
+    .modal-close:hover { color: #fff; }
+
+    .modal-body { padding: 24px; }
+
+    .integration-card {
+      background: #0f0f0f;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .integration-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .integration-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #e0e0e0;
+    }
+
+    .integration-status {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .integration-status.connected {
+      background: rgba(34,197,94,0.15);
+      color: #22c55e;
+    }
+
+    .integration-status.disconnected {
+      background: rgba(239,68,68,0.15);
+      color: #ef4444;
+    }
+
+    .integration-desc {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 12px;
+    }
+
+    .token-input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .token-input-row input {
+      flex: 1;
+      background: #1a1a1a;
+      border: 1px solid #3a3a3a;
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: #e0e0e0;
+      font-size: 13px;
+      font-family: monospace;
+    }
+
+    .token-input-row input:focus { outline: none; border-color: #6366f1; }
+
+    .token-input-row input::placeholder { color: #444; }
+
+    .btn-save {
+      background: #6366f1;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-save:hover { background: #4f46e5; }
+
+    .btn-save:disabled { background: #333; color: #666; cursor: not-allowed; }
+
+    .btn-test {
+      background: transparent;
+      color: #6366f1;
+      border: 1px solid #6366f1;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 13px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-test:hover { background: rgba(99,102,241,0.1); }
+
+    .btn-remove {
+      background: transparent;
+      color: #ef4444;
+      border: 1px solid #ef4444;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 13px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-remove:hover { background: rgba(239,68,68,0.1); }
+
+    .integration-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .test-result {
+      font-size: 12px;
+      margin-top: 8px;
+      padding: 8px;
+      border-radius: 4px;
+    }
+
+    .test-result.success { background: rgba(34,197,94,0.1); color: #22c55e; }
+    .test-result.error { background: rgba(239,68,68,0.1); color: #ef4444; }
+
+    /* Chat area */
     .chat-area {
       flex: 1;
       overflow-y: auto;
@@ -118,11 +306,7 @@ export function getChatHTML(): string {
       color: #555;
     }
 
-    .welcome h2 {
-      font-size: 24px;
-      color: #888;
-      margin-bottom: 12px;
-    }
+    .welcome h2 { font-size: 24px; color: #888; margin-bottom: 12px; }
 
     .welcome p {
       font-size: 14px;
@@ -149,17 +333,8 @@ export function getChatHTML(): string {
       width: 200px;
     }
 
-    .agent-card h3 {
-      font-size: 13px;
-      color: #6366f1;
-      margin-bottom: 4px;
-    }
-
-    .agent-card p {
-      font-size: 11px;
-      color: #666;
-      margin: 0;
-    }
+    .agent-card h3 { font-size: 13px; color: #6366f1; margin-bottom: 4px; }
+    .agent-card p { font-size: 11px; color: #666; margin: 0; }
 
     .input-area {
       background: #1a1a1a;
@@ -183,10 +358,7 @@ export function getChatHTML(): string {
       max-height: 120px;
     }
 
-    .input-area textarea:focus {
-      outline: none;
-      border-color: #6366f1;
-    }
+    .input-area textarea:focus { outline: none; border-color: #6366f1; }
 
     .input-area button {
       background: #6366f1;
@@ -200,15 +372,8 @@ export function getChatHTML(): string {
       transition: background 0.2s;
     }
 
-    .input-area button:hover {
-      background: #4f46e5;
-    }
-
-    .input-area button:disabled {
-      background: #333;
-      color: #666;
-      cursor: not-allowed;
-    }
+    .input-area button:hover { background: #4f46e5; }
+    .input-area button:disabled { background: #333; color: #666; cursor: not-allowed; }
 
     .typing {
       align-self: flex-start;
@@ -217,9 +382,7 @@ export function getChatHTML(): string {
       padding: 8px 16px;
     }
 
-    .typing span {
-      animation: blink 1.4s infinite;
-    }
+    .typing span { animation: blink 1.4s infinite; }
     .typing span:nth-child(2) { animation-delay: 0.2s; }
     .typing span:nth-child(3) { animation-delay: 0.4s; }
 
@@ -236,23 +399,153 @@ export function getChatHTML(): string {
       background: #1a1a1a;
       border-top: 1px solid #2a2a2a;
     }
+
+    @media (max-width: 600px) {
+      header { padding: 12px 16px; flex-wrap: wrap; gap: 8px; }
+      .header-actions { width: 100%; justify-content: space-between; }
+      .chat-area { padding: 16px; }
+      .input-area { padding: 12px 16px; }
+      .message { max-width: 90%; }
+      .modal { margin: 8px; max-height: 95vh; }
+      .agents-grid { gap: 8px; }
+      .agent-card { width: 100%; }
+    }
   </style>
 </head>
 <body>
   <header>
     <h1><span>Developers</span> AI</h1>
-    <div class="agent-selector">
-      <label>Agente:</label>
-      <select id="agentSelect">
-        <option value="auto">Auto (detectar)</option>
-        <option value="manager">Gerente de Projetos</option>
-        <option value="frontend">Frontend</option>
-        <option value="backend">Backend</option>
-        <option value="fullstack">Fullstack</option>
-        <option value="devops">DevOps</option>
-      </select>
+    <div class="header-actions">
+      <div class="agent-selector">
+        <label>Agente:</label>
+        <select id="agentSelect">
+          <option value="auto">Auto (detectar)</option>
+          <option value="manager">Gerente de Projetos</option>
+          <option value="frontend">Frontend</option>
+          <option value="backend">Backend</option>
+          <option value="fullstack">Fullstack</option>
+          <option value="devops">DevOps</option>
+        </select>
+      </div>
+      <button class="settings-btn" onclick="openSettings()">
+        <div class="dot" id="statusDot"></div>
+        Integracoes
+      </button>
     </div>
   </header>
+
+  <!-- Modal de Configuracoes -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Integracoes</h2>
+        <button class="modal-close" onclick="closeSettings()">&times;</button>
+      </div>
+      <div class="modal-body">
+
+        <!-- GitHub -->
+        <div class="integration-card" id="card-github">
+          <div class="integration-header">
+            <span class="integration-name">GitHub</span>
+            <span class="integration-status disconnected" id="status-github">Desconectado</span>
+          </div>
+          <div class="integration-desc">
+            Permite que os agentes criem repositorios, commits, branches e pull requests.
+          </div>
+          <div class="token-input-row">
+            <input type="password" id="token-github" placeholder="ghp_xxxxxxxxxxxx ou github_pat_xxx" />
+            <button class="btn-save" onclick="saveToken('github')">Salvar</button>
+          </div>
+          <div class="integration-actions" id="actions-github" style="display:none">
+            <button class="btn-test" onclick="testToken('github')">Testar conexao</button>
+            <button class="btn-remove" onclick="removeToken('github')">Remover</button>
+          </div>
+          <div id="result-github"></div>
+        </div>
+
+        <!-- Cloudflare -->
+        <div class="integration-card" id="card-cloudflare">
+          <div class="integration-header">
+            <span class="integration-name">Cloudflare</span>
+            <span class="integration-status disconnected" id="status-cloudflare">Desconectado</span>
+          </div>
+          <div class="integration-desc">
+            Permite que os agentes gerenciem Workers, D1, KV e DNS.
+          </div>
+          <div class="token-input-row">
+            <input type="password" id="token-cloudflare" placeholder="Token API Cloudflare" />
+            <button class="btn-save" onclick="saveToken('cloudflare')">Salvar</button>
+          </div>
+          <div class="integration-actions" id="actions-cloudflare" style="display:none">
+            <button class="btn-test" onclick="testToken('cloudflare')">Testar conexao</button>
+            <button class="btn-remove" onclick="removeToken('cloudflare')">Remover</button>
+          </div>
+          <div id="result-cloudflare"></div>
+        </div>
+
+        <!-- Anthropic -->
+        <div class="integration-card" id="card-anthropic">
+          <div class="integration-header">
+            <span class="integration-name">Anthropic (Claude)</span>
+            <span class="integration-status disconnected" id="status-anthropic">Desconectado</span>
+          </div>
+          <div class="integration-desc">
+            API key do Claude para o cerebro dos agentes. Ja configurada via Wrangler secrets, mas pode ser gerenciada aqui tambem.
+          </div>
+          <div class="token-input-row">
+            <input type="password" id="token-anthropic" placeholder="sk-ant-xxxxxxxxxxxx" />
+            <button class="btn-save" onclick="saveToken('anthropic')">Salvar</button>
+          </div>
+          <div class="integration-actions" id="actions-anthropic" style="display:none">
+            <button class="btn-test" onclick="testToken('anthropic')">Testar conexao</button>
+            <button class="btn-remove" onclick="removeToken('anthropic')">Remover</button>
+          </div>
+          <div id="result-anthropic"></div>
+        </div>
+
+        <!-- Vercel -->
+        <div class="integration-card" id="card-vercel">
+          <div class="integration-header">
+            <span class="integration-name">Vercel</span>
+            <span class="integration-status disconnected" id="status-vercel">Desconectado</span>
+          </div>
+          <div class="integration-desc">
+            Deploy automatico de projetos Next.js na Vercel.
+          </div>
+          <div class="token-input-row">
+            <input type="password" id="token-vercel" placeholder="Token Vercel" />
+            <button class="btn-save" onclick="saveToken('vercel')">Salvar</button>
+          </div>
+          <div class="integration-actions" id="actions-vercel" style="display:none">
+            <button class="btn-test" onclick="testToken('vercel')">Testar conexao</button>
+            <button class="btn-remove" onclick="removeToken('vercel')">Remover</button>
+          </div>
+          <div id="result-vercel"></div>
+        </div>
+
+        <!-- Supabase -->
+        <div class="integration-card" id="card-supabase">
+          <div class="integration-header">
+            <span class="integration-name">Supabase</span>
+            <span class="integration-status disconnected" id="status-supabase">Desconectado</span>
+          </div>
+          <div class="integration-desc">
+            Banco de dados, autenticacao e storage para projetos.
+          </div>
+          <div class="token-input-row">
+            <input type="password" id="token-supabase" placeholder="Supabase service role key" />
+            <button class="btn-save" onclick="saveToken('supabase')">Salvar</button>
+          </div>
+          <div class="integration-actions" id="actions-supabase" style="display:none">
+            <button class="btn-test" onclick="testToken('supabase')">Testar conexao</button>
+            <button class="btn-remove" onclick="removeToken('supabase')">Remover</button>
+          </div>
+          <div id="result-supabase"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
   <div class="chat-area" id="chatArea">
     <div class="welcome">
@@ -286,11 +579,7 @@ export function getChatHTML(): string {
   <div class="session-info" id="sessionInfo">Sessao: nova</div>
 
   <div class="input-area">
-    <textarea
-      id="messageInput"
-      placeholder="Descreva o que voce precisa..."
-      rows="1"
-    ></textarea>
+    <textarea id="messageInput" placeholder="Descreva o que voce precisa..." rows="1"></textarea>
     <button id="sendBtn" onclick="sendMessage()">Enviar</button>
   </div>
 
@@ -300,17 +589,150 @@ export function getChatHTML(): string {
     const sendBtn = document.getElementById('sendBtn');
     const agentSelect = document.getElementById('agentSelect');
     const sessionInfo = document.getElementById('sessionInfo');
+    const statusDot = document.getElementById('statusDot');
 
     let sessionId = null;
     let welcomeVisible = true;
 
-    // Auto-resize textarea
+    // ---- SETTINGS / INTEGRATIONS ----
+
+    function openSettings() {
+      document.getElementById('settingsModal').classList.add('active');
+      loadIntegrations();
+    }
+
+    function closeSettings() {
+      document.getElementById('settingsModal').classList.remove('active');
+    }
+
+    // Fechar modal clicando fora
+    document.getElementById('settingsModal').addEventListener('click', function(e) {
+      if (e.target === this) closeSettings();
+    });
+
+    // Fechar com ESC
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeSettings();
+    });
+
+    async function loadIntegrations() {
+      try {
+        const res = await fetch('/integrations');
+        const data = await res.json();
+        let connectedCount = 0;
+
+        // Reset all to disconnected
+        ['github', 'cloudflare', 'anthropic', 'vercel', 'supabase'].forEach(function(p) {
+          const statusEl = document.getElementById('status-' + p);
+          const actionsEl = document.getElementById('actions-' + p);
+          statusEl.textContent = 'Desconectado';
+          statusEl.className = 'integration-status disconnected';
+          actionsEl.style.display = 'none';
+        });
+
+        data.forEach(function(item) {
+          const statusEl = document.getElementById('status-' + item.provider);
+          const actionsEl = document.getElementById('actions-' + item.provider);
+          if (statusEl) {
+            statusEl.textContent = 'Conectado';
+            statusEl.className = 'integration-status connected';
+            connectedCount++;
+          }
+          if (actionsEl) {
+            actionsEl.style.display = 'flex';
+          }
+        });
+
+        statusDot.className = connectedCount > 0 ? 'dot connected' : 'dot';
+      } catch (err) {
+        console.error('Erro ao carregar integracoes:', err);
+      }
+    }
+
+    async function saveToken(provider) {
+      const input = document.getElementById('token-' + provider);
+      const token = input.value.trim();
+      if (!token) return;
+
+      try {
+        const res = await fetch('/integrations', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ provider: provider, token: token }),
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          input.value = '';
+          showResult(provider, 'Token salvo com sucesso!', 'success');
+          loadIntegrations();
+        } else {
+          showResult(provider, 'Erro: ' + (data.error || 'desconhecido'), 'error');
+        }
+      } catch (err) {
+        showResult(provider, 'Erro de conexao: ' + err.message, 'error');
+      }
+    }
+
+    async function testToken(provider) {
+      showResult(provider, 'Testando...', 'success');
+      try {
+        const res = await fetch('/integrations/test', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ provider: provider }),
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          let msg = 'Conexao OK!';
+          if (data.user) msg += ' Conta: ' + data.user;
+          if (data.name) msg += ' (' + data.name + ')';
+          if (data.status) msg += ' Status: ' + data.status;
+          showResult(provider, msg, 'success');
+        } else {
+          showResult(provider, 'Falha: ' + (data.error || 'token invalido'), 'error');
+        }
+      } catch (err) {
+        showResult(provider, 'Erro: ' + err.message, 'error');
+      }
+    }
+
+    async function removeToken(provider) {
+      if (!confirm('Remover token de ' + provider + '?')) return;
+
+      try {
+        const res = await fetch('/integrations', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ provider: provider }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          showResult(provider, 'Token removido.', 'success');
+          loadIntegrations();
+        }
+      } catch (err) {
+        showResult(provider, 'Erro: ' + err.message, 'error');
+      }
+    }
+
+    function showResult(provider, message, type) {
+      const el = document.getElementById('result-' + provider);
+      el.innerHTML = '<div class="test-result ' + type + '">' + message + '</div>';
+      setTimeout(function() { el.innerHTML = ''; }, 5000);
+    }
+
+    // Load integrations on startup
+    loadIntegrations();
+
+    // ---- CHAT ----
+
     messageInput.addEventListener('input', function() {
       this.style.height = '48px';
       this.style.height = Math.min(this.scrollHeight, 120) + 'px';
     });
 
-    // Enter para enviar (Shift+Enter para nova linha)
     messageInput.addEventListener('keydown', function(e) {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
@@ -368,12 +790,10 @@ export function getChatHTML(): string {
       const content = messageInput.value.trim();
       if (!content) return;
 
-      // Mostra mensagem do usuario
       addMessage(content, 'user');
       messageInput.value = '';
       messageInput.style.height = '48px';
 
-      // Desabilita input
       sendBtn.disabled = true;
       messageInput.disabled = true;
       showTyping();
@@ -407,7 +827,6 @@ export function getChatHTML(): string {
         addMessage('Erro de conexao: ' + err.message, 'assistant', 'Sistema', 0);
       }
 
-      // Reabilita input
       sendBtn.disabled = false;
       messageInput.disabled = false;
       messageInput.focus();
