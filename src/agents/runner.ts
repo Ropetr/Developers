@@ -24,20 +24,36 @@ export class AgentRunner {
       throw new Error(`Agente "${agentId}" não encontrado`);
     }
 
-    // 1. Busca memórias relevantes no Vectorize
+    // 1. Busca conhecimento do agente (documentacao alimentada)
+    const knowledgeResults = await this.env.DB
+      .prepare("SELECT content FROM memories WHERE agent_id = ? AND type = 'learning' ORDER BY timestamp DESC LIMIT 20")
+      .bind(agentId)
+      .all<{ content: string }>();
+    const knowledgeEntries = (knowledgeResults.results ?? []).map((r) => {
+      try { const p = JSON.parse(r.content); return `[${p.title}]\n${p.text}`; }
+      catch { return r.content; }
+    });
+
+    // 2. Busca memórias relevantes no Vectorize
     const relevantMemories = await this.memory.search(userMessage, {
       limit: 5,
       agent_id: agentId,
     });
 
-    // 2. Busca histórico recente da sessão
+    // 3. Busca histórico recente da sessão
     const recentHistory = await this.memory.getRecentHistory(sessionId, 10);
 
-    // 3. Monta o contexto para o Claude
+    // 4. Monta o contexto para o Claude
     const messages = this.buildMessages(agent, userMessage, relevantMemories, recentHistory, attachments);
 
-    // 4. Chama a API do Claude
-    const response = await this.callClaude(agent.systemPrompt, messages);
+    // 5. Monta system prompt com conhecimento do agente
+    let systemPrompt = agent.systemPrompt;
+    if (knowledgeEntries.length > 0) {
+      systemPrompt += "\n\n--- BASE DE CONHECIMENTO ---\nVocê possui o seguinte conhecimento especializado. Use-o para fundamentar suas respostas:\n\n" + knowledgeEntries.join("\n\n---\n\n");
+    }
+
+    // 6. Chama a API do Claude
+    const response = await this.callClaude(systemPrompt, messages);
 
     // 5. Salva a conversa na memória (sem os binários dos anexos)
     const attachmentSummary = attachments?.length

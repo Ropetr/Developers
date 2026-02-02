@@ -54,6 +54,9 @@ export default {
         case "/sessions/history":
           return handleSessionHistory(request, env, corsHeaders);
 
+        case "/agents/knowledge":
+          return handleAgentKnowledge(request, env, corsHeaders);
+
         case "/integrations":
           return handleIntegrations(request, env, corsHeaders);
 
@@ -198,6 +201,76 @@ async function handleTestIntegration(request: Request, env: Env, corsHeaders: Re
   } catch (error) {
     const msg = error instanceof Error ? error.message : "Erro";
     return jsonResponse({ success: false, provider: body.provider, error: msg }, 200, corsHeaders);
+  }
+}
+
+async function handleAgentKnowledge(request: Request, env: Env, corsHeaders: Record<string, string>): Promise<Response> {
+  const url = new URL(request.url);
+
+  switch (request.method) {
+    case "GET": {
+      const agentId = url.searchParams.get("agent_id");
+      let query = "SELECT id, agent_id, content, timestamp FROM memories WHERE type = 'learning'";
+      const binds: string[] = [];
+      if (agentId) {
+        query += " AND agent_id = ?";
+        binds.push(agentId);
+      }
+      query += " ORDER BY timestamp DESC LIMIT 100";
+      const stmt = binds.length > 0
+        ? env.DB.prepare(query).bind(...binds)
+        : env.DB.prepare(query);
+      const { results } = await stmt.all<{ id: string; agent_id: string; content: string; timestamp: number }>();
+      const items = (results ?? []).map((r) => {
+        try {
+          const parsed = JSON.parse(r.content);
+          return { id: r.id, agent_id: r.agent_id, title: parsed.title || "Sem titulo", source: parsed.source || "manual", preview: (parsed.text || "").substring(0, 150), timestamp: r.timestamp };
+        } catch {
+          return { id: r.id, agent_id: r.agent_id, title: "Sem titulo", source: "manual", preview: r.content.substring(0, 150), timestamp: r.timestamp };
+        }
+      });
+      return jsonResponse(items, 200, corsHeaders);
+    }
+
+    case "POST": {
+      const body = (await request.json()) as { agent_id: string; title: string; text: string; source?: string };
+      if (!body.agent_id || !body.text) {
+        return jsonResponse({ error: "agent_id e text sao obrigatorios" }, 400, corsHeaders);
+      }
+      if (!AGENTS[body.agent_id]) {
+        return jsonResponse({ error: "Agente nao encontrado" }, 400, corsHeaders);
+      }
+      const id = crypto.randomUUID();
+      const timestamp = Date.now();
+      const content = JSON.stringify({ title: body.title || "Sem titulo", text: body.text, source: body.source || "manual" });
+
+      // Salva no D1
+      await env.DB.prepare(
+        "INSERT INTO memories (id, session_id, agent_id, content, type, timestamp) VALUES (?, ?, ?, ?, ?, ?)"
+      ).bind(id, "knowledge", body.agent_id, content, "learning", timestamp).run();
+
+      // Salva no Vectorize para busca semantica
+      const { generateEmbedding } = await import("./utils/embeddings");
+      const embedding = await generateEmbedding(body.text.substring(0, 2000));
+      await env.VECTORIZE.upsert([{
+        id,
+        values: embedding,
+        metadata: { agent_id: body.agent_id, type: "learning", timestamp, preview: body.text.substring(0, 500) },
+      }]);
+
+      return jsonResponse({ success: true, id }, 200, corsHeaders);
+    }
+
+    case "DELETE": {
+      const body = (await request.json()) as { id: string };
+      if (!body.id) return jsonResponse({ error: "id e obrigatorio" }, 400, corsHeaders);
+      await env.DB.prepare("DELETE FROM memories WHERE id = ? AND type = 'learning'").bind(body.id).run();
+      try { await env.VECTORIZE.deleteByIds([body.id]); } catch {}
+      return jsonResponse({ success: true }, 200, corsHeaders);
+    }
+
+    default:
+      return jsonResponse({ error: "Metodo nao permitido" }, 405, corsHeaders);
   }
 }
 

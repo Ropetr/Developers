@@ -198,6 +198,58 @@ export function getChatHTML(): string {
     .test-result.success { background: rgba(34,197,94,0.1); color: #22c55e; }
     .test-result.error { background: rgba(239,68,68,0.1); color: #ef4444; }
 
+    /* AGENTS CONFIG MODAL */
+    .modal.wide { max-width: 700px; }
+    .agent-tabs { display: flex; gap: 4px; padding: 0 24px 16px; overflow-x: auto; }
+    .agent-tab {
+      background: #0f0f0f; border: 1px solid #2a2a2a; border-radius: 6px;
+      padding: 8px 14px; font-size: 12px; color: #888; cursor: pointer; white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .agent-tab:hover { border-color: #6366f1; color: #e0e0e0; }
+    .agent-tab.active { background: #6366f1; border-color: #6366f1; color: #fff; }
+    .agent-info { padding: 0 24px 16px; }
+    .agent-info p { font-size: 12px; color: #666; margin-bottom: 12px; }
+    .agent-skills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+    .agent-skill { background: rgba(99,102,241,0.15); color: #818cf8; border-radius: 4px; padding: 3px 8px; font-size: 11px; }
+    .knowledge-form { padding: 0 24px 16px; }
+    .knowledge-form input {
+      width: 100%; background: #0f0f0f; border: 1px solid #3a3a3a; border-radius: 6px;
+      padding: 8px 12px; color: #e0e0e0; font-size: 13px; margin-bottom: 8px;
+    }
+    .knowledge-form input:focus { outline: none; border-color: #6366f1; }
+    .knowledge-form textarea {
+      width: 100%; background: #0f0f0f; border: 1px solid #3a3a3a; border-radius: 6px;
+      padding: 10px 12px; color: #e0e0e0; font-size: 13px; font-family: inherit;
+      resize: vertical; min-height: 100px; margin-bottom: 8px;
+    }
+    .knowledge-form textarea:focus { outline: none; border-color: #6366f1; }
+    .knowledge-actions { display: flex; gap: 8px; }
+    .knowledge-actions .btn-save { flex: 1; }
+    .btn-upload-k {
+      background: #2a2a2a; border: 1px solid #3a3a3a; color: #888; border-radius: 6px;
+      padding: 8px 16px; font-size: 13px; cursor: pointer; white-space: nowrap;
+    }
+    .btn-upload-k:hover { border-color: #6366f1; color: #e0e0e0; }
+    .knowledge-list { padding: 0 24px 24px; }
+    .knowledge-list h4 { font-size: 13px; color: #888; margin-bottom: 10px; }
+    .knowledge-item {
+      background: #0f0f0f; border: 1px solid #2a2a2a; border-radius: 6px;
+      padding: 10px 12px; margin-bottom: 6px; display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 10px;
+    }
+    .knowledge-item-info { flex: 1; min-width: 0; }
+    .knowledge-item-title { font-size: 13px; color: #e0e0e0; font-weight: 600; }
+    .knowledge-item-meta { font-size: 11px; color: #555; margin-top: 3px; }
+    .knowledge-item-preview { font-size: 12px; color: #666; margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .knowledge-item-delete {
+      background: none; border: none; color: #444; cursor: pointer; font-size: 16px;
+      padding: 2px 4px; flex-shrink: 0; border-radius: 4px;
+    }
+    .knowledge-item-delete:hover { color: #ef4444; background: rgba(239,68,68,0.1); }
+    .knowledge-empty { text-align: center; padding: 20px; color: #444; font-size: 13px; }
+    .knowledge-count { font-size: 11px; color: #6366f1; margin-left: 6px; }
+
     /* CHAT */
     .chat-area { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
     .message {
@@ -298,6 +350,9 @@ export function getChatHTML(): string {
             <option value="devops">DevOps</option>
           </select>
         </div>
+        <button class="settings-btn" onclick="openAgentsConfig()">
+          &#9881; Agentes
+        </button>
         <button class="settings-btn" onclick="openSettings()">
           <div class="dot" id="statusDot"></div>
           Integracoes
@@ -319,6 +374,31 @@ export function getChatHTML(): string {
             const placeholders = {github:'ghp_xxx ou github_pat_xxx',cloudflare:'Token API Cloudflare',anthropic:'sk-ant-xxx',vercel:'Token Vercel',supabase:'Supabase service role key'};
             return '<div class="integration-card"><div class="integration-header"><span class="integration-name">'+(names as any)[p]+'</span><span class="integration-status disconnected" id="status-'+p+'">Desconectado</span></div><div class="integration-desc">'+(descs as any)[p]+'</div><div class="token-input-row"><input type="password" id="token-'+p+'" placeholder="'+(placeholders as any)[p]+'" /><button class="btn-save" onclick="saveToken(\''+p+'\')">Salvar</button></div><div class="integration-actions" id="actions-'+p+'" style="display:none"><button class="btn-test" onclick="testToken(\''+p+'\')">Testar</button><button class="btn-remove" onclick="removeToken(\''+p+'\')">Remover</button></div><div id="result-'+p+'"></div></div>';
           }).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- AGENTS CONFIG MODAL -->
+    <div class="modal-overlay" id="agentsModal">
+      <div class="modal wide">
+        <div class="modal-header">
+          <h2>Configurar Agentes</h2>
+          <button class="modal-close" onclick="closeAgentsConfig()">&times;</button>
+        </div>
+        <div class="agent-tabs" id="agentTabs"></div>
+        <div class="agent-info" id="agentInfo"></div>
+        <div class="knowledge-form" id="knowledgeForm">
+          <input type="text" id="kTitle" placeholder="Titulo (ex: Docs React 19, Regras CSS, API Stripe...)" />
+          <textarea id="kText" placeholder="Cole aqui a documentacao, instrucoes, exemplos de codigo, ou qualquer informacao que o agente precisa saber..."></textarea>
+          <input type="file" id="kFileInput" multiple accept=".txt,.md,.js,.ts,.py,.json,.css,.html,.sql,.csv,.xml,.yaml,.yml,.toml,.cfg,.ini,.sh" style="display:none" />
+          <div class="knowledge-actions">
+            <button class="btn-save" onclick="saveKnowledge()">Salvar Conhecimento</button>
+            <button class="btn-upload-k" onclick="document.getElementById('kFileInput').click()">Enviar Arquivo</button>
+          </div>
+        </div>
+        <div class="knowledge-list" id="knowledgeList">
+          <h4>Base de Conhecimento</h4>
+          <div id="knowledgeItems"></div>
         </div>
       </div>
     </div>
@@ -668,6 +748,142 @@ export function getChatHTML(): string {
       sendBtn.disabled = false;
       messageInput.disabled = false;
       messageInput.focus();
+    }
+
+    // ---- AGENTS CONFIG ----
+    var agentsData = {
+      manager: { name: 'Gerente de Projetos', desc: 'Coordena, planeja e distribui tarefas entre os agentes.', skills: ['planejamento','coordenacao','requisitos','priorizacao'] },
+      frontend: { name: 'Desenvolvedor Frontend', desc: 'React, Next.js, Tailwind CSS, UI/UX e responsividade.', skills: ['react','nextjs','tailwind','typescript','ui/ux'] },
+      backend: { name: 'Desenvolvedor Backend', desc: 'APIs, banco de dados, autenticacao e logica de negocio.', skills: ['api','sql','autenticacao','cloudflare workers'] },
+      fullstack: { name: 'Desenvolvedor Fullstack', desc: 'Aplicacoes completas frontend + backend integrados.', skills: ['react','nextjs','api','sql','deploy'] },
+      devops: { name: 'Engenheiro DevOps', desc: 'Deploy, CI/CD, infraestrutura, dominios e monitoramento.', skills: ['deploy','ci/cd','cloudflare','github actions'] }
+    };
+    var selectedAgent = 'manager';
+
+    function openAgentsConfig() {
+      document.getElementById('agentsModal').classList.add('active');
+      renderAgentTabs();
+      selectAgentTab('manager');
+    }
+    function closeAgentsConfig() { document.getElementById('agentsModal').classList.remove('active'); }
+    document.getElementById('agentsModal').addEventListener('click', function(e) { if (e.target === this) closeAgentsConfig(); });
+
+    function renderAgentTabs() {
+      var tabs = document.getElementById('agentTabs');
+      tabs.innerHTML = Object.keys(agentsData).map(function(id) {
+        var a = agentsData[id];
+        return '<button class="agent-tab' + (id === selectedAgent ? ' active' : '') + '" onclick="selectAgentTab(\\'' + id + '\\')">' + a.name + '<span class="knowledge-count" id="kcount-' + id + '"></span></button>';
+      }).join('');
+    }
+
+    function selectAgentTab(id) {
+      selectedAgent = id;
+      var a = agentsData[id];
+      document.querySelectorAll('.agent-tab').forEach(function(el, i) {
+        el.classList.toggle('active', Object.keys(agentsData)[i] === id);
+      });
+      document.getElementById('agentInfo').innerHTML =
+        '<p>' + a.desc + '</p>'
+        + '<div class="agent-skills">' + a.skills.map(function(s) { return '<span class="agent-skill">' + s + '</span>'; }).join('') + '</div>';
+      document.getElementById('kTitle').value = '';
+      document.getElementById('kText').value = '';
+      loadKnowledge(id);
+    }
+
+    async function loadKnowledge(agentId) {
+      try {
+        var res = await fetch('/agents/knowledge?agent_id=' + agentId);
+        var data = await res.json();
+        var container = document.getElementById('knowledgeItems');
+        // Update counts
+        var countEl = document.getElementById('kcount-' + agentId);
+        if (countEl) countEl.textContent = data.length > 0 ? ' (' + data.length + ')' : '';
+
+        if (!data.length) {
+          container.innerHTML = '<div class="knowledge-empty">Nenhum conhecimento adicionado. Alimente o agente com documentacao, regras ou exemplos.</div>';
+          return;
+        }
+        container.innerHTML = data.map(function(item) {
+          var date = new Date(item.timestamp).toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',year:'2-digit'});
+          return '<div class="knowledge-item">'
+            + '<div class="knowledge-item-info">'
+            + '<div class="knowledge-item-title">' + escapeHtml(item.title) + '</div>'
+            + '<div class="knowledge-item-meta">' + item.source + ' &middot; ' + date + '</div>'
+            + '<div class="knowledge-item-preview">' + escapeHtml(item.preview) + '</div>'
+            + '</div>'
+            + '<button class="knowledge-item-delete" onclick="deleteKnowledge(\\'' + item.id + '\\')" title="Remover">&times;</button>'
+            + '</div>';
+        }).join('');
+      } catch(e) { console.error(e); }
+    }
+
+    async function saveKnowledge() {
+      var title = document.getElementById('kTitle').value.trim();
+      var text = document.getElementById('kText').value.trim();
+      if (!text) { alert('Cole o conteudo que o agente precisa aprender.'); return; }
+      if (!title) title = text.substring(0, 60) + '...';
+      try {
+        var res = await fetch('/agents/knowledge', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ agent_id: selectedAgent, title: title, text: text, source: 'manual' })
+        });
+        var data = await res.json();
+        if (data.success) {
+          document.getElementById('kTitle').value = '';
+          document.getElementById('kText').value = '';
+          loadKnowledge(selectedAgent);
+        } else {
+          alert('Erro: ' + (data.error || '?'));
+        }
+      } catch(e) { alert('Erro: ' + e.message); }
+    }
+
+    async function deleteKnowledge(id) {
+      if (!confirm('Remover este conhecimento?')) return;
+      try {
+        await fetch('/agents/knowledge', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: id })
+        });
+        loadKnowledge(selectedAgent);
+      } catch(e) { console.error(e); }
+    }
+
+    // File upload for knowledge
+    document.getElementById('kFileInput').addEventListener('change', function(e) {
+      var files = Array.from(e.target.files || []);
+      files.forEach(function(file) {
+        var reader = new FileReader();
+        reader.onload = function(ev) {
+          var content = ev.target.result;
+          var title = file.name;
+          fetch('/agents/knowledge', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ agent_id: selectedAgent, title: title, text: content, source: 'arquivo: ' + file.name })
+          }).then(function() { loadKnowledge(selectedAgent); });
+        };
+        reader.readAsText(file);
+      });
+      e.target.value = '';
+    });
+
+    // Load all knowledge counts on init
+    async function loadAllKnowledgeCounts() {
+      try {
+        var res = await fetch('/agents/knowledge');
+        var data = await res.json();
+        var counts = {};
+        data.forEach(function(item) {
+          counts[item.agent_id] = (counts[item.agent_id] || 0) + 1;
+        });
+        Object.keys(agentsData).forEach(function(id) {
+          var el = document.getElementById('kcount-' + id);
+          if (el && counts[id]) el.textContent = ' (' + counts[id] + ')';
+        });
+      } catch(e) {}
     }
 
     // Init
