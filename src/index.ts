@@ -13,7 +13,6 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
 
-    // CORS headers
     const corsHeaders = {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
@@ -25,33 +24,9 @@ export default {
     }
 
     try {
-      // Rotas da API
       switch (url.pathname) {
         case "/":
-          return jsonResponse(
-            {
-              name: "Developers",
-              description: "Software house powered by AI agents",
-              version: "1.1.0",
-              agents: Object.values(AGENTS).map((a) => ({
-                id: a.id,
-                name: a.name,
-                description: a.description,
-                skills: a.skills,
-              })),
-              endpoints: {
-                "POST /chat": "Enviar mensagem para um agente",
-                "GET /agents": "Listar agentes disponíveis",
-                "GET /health": "Status do sistema",
-                "GET /integrations": "Listar integrações configuradas",
-                "PUT /integrations": "Salvar token de integração",
-                "DELETE /integrations": "Remover integração",
-                "POST /integrations/test": "Testar conexão de integração",
-              },
-            },
-            200,
-            corsHeaders
-          );
+          return jsonResponse({ name: "Developers", version: "1.2.0" }, 200, corsHeaders);
 
         case "/app":
           return new Response(getChatHTML(), {
@@ -64,28 +39,26 @@ export default {
         case "/agents":
           return jsonResponse(
             Object.values(AGENTS).map((a) => ({
-              id: a.id,
-              name: a.name,
-              description: a.description,
-              skills: a.skills,
+              id: a.id, name: a.name, description: a.description, skills: a.skills,
             })),
-            200,
-            corsHeaders
+            200, corsHeaders
           );
 
         case "/chat":
-          if (request.method !== "POST") {
-            return jsonResponse({ error: "Use POST" }, 405, corsHeaders);
-          }
+          if (request.method !== "POST") return jsonResponse({ error: "Use POST" }, 405, corsHeaders);
           return handleChat(request, env, corsHeaders);
+
+        case "/sessions":
+          return handleSessions(request, env, corsHeaders);
+
+        case "/sessions/history":
+          return handleSessionHistory(request, env, corsHeaders);
 
         case "/integrations":
           return handleIntegrations(request, env, corsHeaders);
 
         case "/integrations/test":
-          if (request.method !== "POST") {
-            return jsonResponse({ error: "Use POST" }, 405, corsHeaders);
-          }
+          if (request.method !== "POST") return jsonResponse({ error: "Use POST" }, 405, corsHeaders);
           return handleTestIntegration(request, env, corsHeaders);
 
         default:
@@ -98,13 +71,8 @@ export default {
   },
 };
 
-async function handleChat(
-  request: Request,
-  env: Env,
-  corsHeaders: Record<string, string>
-): Promise<Response> {
+async function handleChat(request: Request, env: Env, corsHeaders: Record<string, string>): Promise<Response> {
   const body = (await request.json()) as UserMessage;
-
   if (!body.content || body.content.trim() === "") {
     return jsonResponse({ error: "Campo 'content' é obrigatório" }, 400, corsHeaders);
   }
@@ -112,46 +80,39 @@ async function handleChat(
   const sessionId = body.session_id ?? crypto.randomUUID();
   const agentId = body.agent ?? findBestAgent(body.content);
 
+  // Upsert session
+  await env.DB.prepare(
+    `INSERT INTO sessions (id, created_at, last_active, summary)
+     VALUES (?, ?, ?, ?)
+     ON CONFLICT(id) DO UPDATE SET last_active = excluded.last_active`
+  ).bind(sessionId, Date.now(), Date.now(), body.content.substring(0, 100)).run();
+
   const runner = new AgentRunner(env);
   const response: AgentResponse = await runner.run(agentId, body.content, sessionId);
 
   return jsonResponse(response, 200, corsHeaders);
 }
 
-async function handleIntegrations(
-  request: Request,
-  env: Env,
-  corsHeaders: Record<string, string>
-): Promise<Response> {
-  const store = createTokenStore(env.DB, env.ENCRYPTION_SECRET || env.ANTHROPIC_API_KEY);
-
+async function handleSessions(request: Request, env: Env, corsHeaders: Record<string, string>): Promise<Response> {
   switch (request.method) {
     case "GET": {
-      const integrations = await store.list();
-      return jsonResponse(integrations, 200, corsHeaders);
-    }
-
-    case "PUT": {
-      const body = (await request.json()) as {
-        provider: string;
-        token: string;
-        label?: string;
-      };
-
-      if (!body.provider || !body.token) {
-        return jsonResponse({ error: "provider e token são obrigatórios" }, 400, corsHeaders);
-      }
-
-      await store.save(body.provider, body.token, body.label);
-      return jsonResponse({ success: true, provider: body.provider }, 200, corsHeaders);
+      const { results } = await env.DB.prepare(
+        `SELECT s.id, s.created_at, s.last_active, s.summary,
+                COUNT(m.id) as message_count
+         FROM sessions s
+         LEFT JOIN memories m ON m.session_id = s.id AND m.type = 'conversation'
+         GROUP BY s.id
+         ORDER BY s.last_active DESC
+         LIMIT 50`
+      ).all<{ id: string; created_at: number; last_active: number; summary: string | null; message_count: number }>();
+      return jsonResponse(results ?? [], 200, corsHeaders);
     }
 
     case "DELETE": {
-      const body = (await request.json()) as { provider: string };
-      if (!body.provider) {
-        return jsonResponse({ error: "provider é obrigatório" }, 400, corsHeaders);
-      }
-      await store.remove(body.provider);
+      const body = (await request.json()) as { session_id: string };
+      if (!body.session_id) return jsonResponse({ error: "session_id é obrigatório" }, 400, corsHeaders);
+      await env.DB.prepare("DELETE FROM memories WHERE session_id = ?").bind(body.session_id).run();
+      await env.DB.prepare("DELETE FROM sessions WHERE id = ?").bind(body.session_id).run();
       return jsonResponse({ success: true }, 200, corsHeaders);
     }
 
@@ -160,85 +121,88 @@ async function handleIntegrations(
   }
 }
 
-async function handleTestIntegration(
-  request: Request,
-  env: Env,
-  corsHeaders: Record<string, string>
-): Promise<Response> {
+async function handleSessionHistory(request: Request, env: Env, corsHeaders: Record<string, string>): Promise<Response> {
+  if (request.method !== "GET") return jsonResponse({ error: "Use GET" }, 405, corsHeaders);
+
+  const url = new URL(request.url);
+  const sessionId = url.searchParams.get("session_id");
+  if (!sessionId) return jsonResponse({ error: "session_id query param é obrigatório" }, 400, corsHeaders);
+
+  const { results } = await env.DB.prepare(
+    `SELECT id, agent_id, content, type, timestamp FROM memories
+     WHERE session_id = ? AND type = 'conversation' ORDER BY timestamp ASC`
+  ).bind(sessionId).all<{ id: string; agent_id: string; content: string; type: string; timestamp: number }>();
+
+  const messages = (results ?? []).map((row) => {
+    try {
+      const parsed = JSON.parse(row.content);
+      return { role: parsed.role, message: parsed.message, agent_id: row.agent_id, timestamp: row.timestamp };
+    } catch {
+      return { role: "system", message: row.content, agent_id: row.agent_id, timestamp: row.timestamp };
+    }
+  });
+
+  return jsonResponse(messages, 200, corsHeaders);
+}
+
+async function handleIntegrations(request: Request, env: Env, corsHeaders: Record<string, string>): Promise<Response> {
+  const store = createTokenStore(env.DB, env.ENCRYPTION_SECRET || env.ANTHROPIC_API_KEY);
+  switch (request.method) {
+    case "GET": return jsonResponse(await store.list(), 200, corsHeaders);
+    case "PUT": {
+      const body = (await request.json()) as { provider: string; token: string; label?: string };
+      if (!body.provider || !body.token) return jsonResponse({ error: "provider e token são obrigatórios" }, 400, corsHeaders);
+      await store.save(body.provider, body.token, body.label);
+      return jsonResponse({ success: true, provider: body.provider }, 200, corsHeaders);
+    }
+    case "DELETE": {
+      const body = (await request.json()) as { provider: string };
+      if (!body.provider) return jsonResponse({ error: "provider é obrigatório" }, 400, corsHeaders);
+      await store.remove(body.provider);
+      return jsonResponse({ success: true }, 200, corsHeaders);
+    }
+    default: return jsonResponse({ error: "Método não permitido" }, 405, corsHeaders);
+  }
+}
+
+async function handleTestIntegration(request: Request, env: Env, corsHeaders: Record<string, string>): Promise<Response> {
   const store = createTokenStore(env.DB, env.ENCRYPTION_SECRET || env.ANTHROPIC_API_KEY);
   const body = (await request.json()) as { provider: string };
-
-  if (!body.provider) {
-    return jsonResponse({ error: "provider é obrigatório" }, 400, corsHeaders);
-  }
+  if (!body.provider) return jsonResponse({ error: "provider é obrigatório" }, 400, corsHeaders);
 
   const token = await store.get(body.provider);
-  if (!token) {
-    return jsonResponse({ error: "Token não configurado para este provider" }, 404, corsHeaders);
-  }
+  if (!token) return jsonResponse({ error: "Token não configurado" }, 404, corsHeaders);
 
   try {
     switch (body.provider) {
       case "github": {
         const gh = createGitHubClient(token);
         const user = await gh.getUser();
-        return jsonResponse(
-          { success: true, provider: "github", user: user.login, name: user.name },
-          200,
-          corsHeaders
-        );
+        return jsonResponse({ success: true, provider: "github", user: user.login, name: user.name }, 200, corsHeaders);
       }
-
       case "cloudflare": {
         const cf = createCloudflareClient(token, "");
         const result = await cf.verifyToken();
-        return jsonResponse(
-          { success: true, provider: "cloudflare", status: result.status },
-          200,
-          corsHeaders
-        );
+        return jsonResponse({ success: true, provider: "cloudflare", status: result.status }, 200, corsHeaders);
       }
-
       case "anthropic": {
-        const response = await fetch("https://api.anthropic.com/v1/messages", {
+        const res = await fetch("https://api.anthropic.com/v1/messages", {
           method: "POST",
-          headers: {
-            "x-api-key": token,
-            "anthropic-version": "2023-06-01",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            model: "claude-sonnet-4-20250514",
-            max_tokens: 10,
-            messages: [{ role: "user", content: "ping" }],
-          }),
+          headers: { "x-api-key": token, "anthropic-version": "2023-06-01", "Content-Type": "application/json" },
+          body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 10, messages: [{ role: "user", content: "ping" }] }),
         });
-        return jsonResponse(
-          { success: response.ok, provider: "anthropic", status: response.ok ? "active" : "invalid" },
-          200,
-          corsHeaders
-        );
+        return jsonResponse({ success: res.ok, provider: "anthropic", status: res.ok ? "active" : "invalid" }, 200, corsHeaders);
       }
-
-      default:
-        return jsonResponse({ error: `Teste não implementado para ${body.provider}` }, 400, corsHeaders);
+      default: return jsonResponse({ error: `Teste não implementado para ${body.provider}` }, 400, corsHeaders);
     }
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Erro desconhecido";
-    return jsonResponse({ success: false, provider: body.provider, error: message }, 200, corsHeaders);
+    const msg = error instanceof Error ? error.message : "Erro";
+    return jsonResponse({ success: false, provider: body.provider, error: msg }, 200, corsHeaders);
   }
 }
 
-function jsonResponse(
-  data: unknown,
-  status: number,
-  extraHeaders: Record<string, string> = {}
-): Response {
+function jsonResponse(data: unknown, status: number, extraHeaders: Record<string, string> = {}): Response {
   return new Response(JSON.stringify(data, null, 2), {
-    status,
-    headers: {
-      "Content-Type": "application/json",
-      ...extraHeaders,
-    },
+    status, headers: { "Content-Type": "application/json", ...extraHeaders },
   });
 }
