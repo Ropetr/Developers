@@ -625,7 +625,7 @@ export function getChatHTML(): string {
       var displayText = content;
       if (pendingAttachments.length > 0) {
         var names = pendingAttachments.map(function(a) { return a.name; });
-        displayText += '\n[Anexos: ' + names.join(', ') + ']';
+        displayText += '\\n[Anexos: ' + names.join(', ') + ']';
       }
       addMessage(displayText, 'user');
 
