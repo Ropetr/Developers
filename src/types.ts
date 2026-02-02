@@ -47,6 +47,8 @@ export interface AgentDefinition {
   description: string;
   systemPrompt: string;
   skills: string[];
+  directorate: string;
+  mode: "core" | "od";
 }
 
 // Memória armazenada no Vectorize

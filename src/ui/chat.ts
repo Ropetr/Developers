@@ -300,6 +300,43 @@ export function getChatHTML(): string {
     }
     .btn-clear-sel:hover { color: #e0e0e0; }
 
+    /* CODE BLOCKS */
+    .code-block-wrapper {
+      background: #0d1117; border: 1px solid #30363d; border-radius: 6px;
+      margin: 8px 0; overflow: hidden;
+    }
+    .code-block-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 6px 12px; background: #161b22; border-bottom: 1px solid #30363d;
+      font-size: 12px; color: #8b949e;
+    }
+    .code-block-wrapper pre {
+      margin: 0; padding: 12px; overflow-x: auto; font-size: 13px; line-height: 1.5;
+    }
+    .code-block-wrapper code {
+      font-family: 'Fira Code', 'Cascadia Code', 'Courier New', monospace; color: #c9d1d9;
+    }
+    .btn-apply-code {
+      background: #238636; color: #fff; border: none; border-radius: 4px;
+      padding: 3px 10px; font-size: 11px; cursor: pointer; font-weight: 600;
+    }
+    .btn-apply-code:hover { background: #2ea043; }
+    .btn-apply-code.applied { background: #1a7f37; cursor: default; }
+    .btn-copy-code {
+      background: #2a2a2a; color: #8b949e; border: 1px solid #30363d; border-radius: 4px;
+      padding: 3px 10px; font-size: 11px; cursor: pointer; margin-left: 6px;
+    }
+    .btn-copy-code:hover { color: #c9d1d9; border-color: #6366f1; }
+    .code-actions { display: flex; gap: 4px; }
+    .toast {
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+      background: #238636; color: #fff; padding: 10px 20px; border-radius: 8px;
+      font-size: 13px; font-weight: 600; z-index: 200; opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .toast.error { background: #da3633; }
+    .toast.visible { opacity: 1; }
+
     /* CHAT */
     .chat-area { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
     .message {
@@ -719,6 +756,8 @@ export function getChatHTML(): string {
       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
     });
 
+    var BT3 = String.fromCharCode(96,96,96);
+
     function addMessage(content, type, agentN, memoriesUsed) {
       if (welcomeVisible) {
         var w = document.getElementById('welcomeScreen');
@@ -733,9 +772,13 @@ export function getChatHTML(): string {
         badge.textContent = agentN;
         div.appendChild(badge);
       }
-      var text = document.createElement('span');
-      text.textContent = content;
-      div.appendChild(text);
+      if (type === 'assistant') {
+        renderContentWithCodeBlocks(content, div);
+      } else {
+        var text = document.createElement('span');
+        text.textContent = content;
+        div.appendChild(text);
+      }
       if (type === 'assistant' && memoriesUsed > 0) {
         var info = document.createElement('span');
         info.className = 'memory-info';
@@ -744,6 +787,78 @@ export function getChatHTML(): string {
       }
       chatArea.appendChild(div);
       chatArea.scrollTop = chatArea.scrollHeight;
+    }
+
+    function renderContentWithCodeBlocks(content, container) {
+      var parts = content.split(BT3);
+      for (var i = 0; i < parts.length; i++) {
+        if (i % 2 === 0) {
+          if (parts[i].length > 0) {
+            var textSpan = document.createElement('span');
+            textSpan.textContent = parts[i];
+            container.appendChild(textSpan);
+          }
+        } else {
+          var codeContent = parts[i];
+          var firstNL = codeContent.indexOf('\\n');
+          var lang = ''; var filePath = ''; var code = codeContent;
+          if (firstNL > 0) {
+            var header = codeContent.substring(0, firstNL).trim();
+            code = codeContent.substring(firstNL + 1);
+            if (code.charAt(code.length - 1) === '\\n') code = code.substring(0, code.length - 1);
+            var colonIdx = header.indexOf(':');
+            if (colonIdx > 0 && header.indexOf(' ') < 0) {
+              lang = header.substring(0, colonIdx);
+              filePath = header.substring(colonIdx + 1);
+            } else {
+              lang = header;
+            }
+          } else if (firstNL === 0) {
+            code = codeContent.substring(1);
+            if (code.charAt(code.length - 1) === '\\n') code = code.substring(0, code.length - 1);
+          }
+
+          var wrapper = document.createElement('div');
+          wrapper.className = 'code-block-wrapper';
+          var codeHeader = document.createElement('div');
+          codeHeader.className = 'code-block-header';
+          var labelSpan = document.createElement('span');
+          labelSpan.textContent = filePath || lang || 'code';
+          codeHeader.appendChild(labelSpan);
+          var actions = document.createElement('div');
+          actions.className = 'code-actions';
+
+          (function(codeText, fp) {
+            var copyBtn = document.createElement('button');
+            copyBtn.className = 'btn-copy-code';
+            copyBtn.textContent = 'Copiar';
+            copyBtn.onclick = function() {
+              navigator.clipboard.writeText(codeText).then(function() {
+                copyBtn.textContent = 'Copiado!';
+                setTimeout(function() { copyBtn.textContent = 'Copiar'; }, 2000);
+              });
+            };
+            actions.appendChild(copyBtn);
+
+            if (projectHandle) {
+              var applyBtn = document.createElement('button');
+              applyBtn.className = 'btn-apply-code';
+              applyBtn.textContent = fp ? 'Aplicar no Projeto' : 'Salvar como...';
+              applyBtn.onclick = function() { applyCodeToProject(fp, codeText, applyBtn); };
+              actions.appendChild(applyBtn);
+            }
+          })(code, filePath);
+
+          codeHeader.appendChild(actions);
+          wrapper.appendChild(codeHeader);
+          var pre = document.createElement('pre');
+          var codeEl = document.createElement('code');
+          codeEl.textContent = code;
+          pre.appendChild(codeEl);
+          wrapper.appendChild(pre);
+          container.appendChild(wrapper);
+        }
+      }
     }
 
     function showTyping() {
@@ -965,7 +1080,7 @@ export function getChatHTML(): string {
         return;
       }
       try {
-        projectHandle = await window.showDirectoryPicker({ mode: 'read' });
+        projectHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
         selectedFiles = {};
         projectTree = await readDirRecursive(projectHandle, '', 0);
         renderProjectUI();
@@ -1096,6 +1211,46 @@ export function getChatHTML(): string {
         return await file.text();
       }
       return null;
+    }
+
+    // ---- WRITE FILES TO PROJECT ----
+    async function applyCodeToProject(filePath, content, btn) {
+      if (!projectHandle) { showToast('Nenhuma pasta conectada.', true); return; }
+      if (!filePath) {
+        filePath = prompt('Caminho do arquivo (ex: src/App.tsx):');
+        if (!filePath) return;
+      }
+      filePath = filePath.replace(/^\\/+/, '');
+      try {
+        var parts = filePath.split('/').filter(function(p) { return p.length > 0; });
+        var dirHandle = projectHandle;
+        for (var i = 0; i < parts.length - 1; i++) {
+          dirHandle = await dirHandle.getDirectoryHandle(parts[i], { create: true });
+        }
+        var fileName = parts[parts.length - 1];
+        var fileHandle = await dirHandle.getFileHandle(fileName, { create: true });
+        var writable = await fileHandle.createWritable();
+        await writable.write(content);
+        await writable.close();
+        if (btn) { btn.textContent = 'Aplicado!'; btn.className = 'btn-apply-code applied'; }
+        showToast('Arquivo salvo: ' + filePath);
+        // Refresh file tree
+        projectTree = await readDirRecursive(projectHandle, '', 0);
+        renderProjectUI();
+      } catch(e) {
+        showToast('Erro: ' + e.message, true);
+      }
+    }
+
+    function showToast(msg, isError) {
+      var existing = document.querySelector('.toast');
+      if (existing) existing.remove();
+      var t = document.createElement('div');
+      t.className = 'toast' + (isError ? ' error' : '');
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(function() { t.classList.add('visible'); }, 10);
+      setTimeout(function() { t.classList.remove('visible'); setTimeout(function() { t.remove(); }, 300); }, 3000);
     }
 
     // Init

@@ -1,0 +1,367 @@
+version: 2.0.0
+updated: "2026-02-02"
+source_of_truth: "ESPECIALISTAS.md"
+
+agents:
+  # ═══════════════════════════════
+  # CORE (14 agentes — sempre ativos)
+  # ═══════════════════════════════
+
+  # Orquestracao
+  - id: maestro
+    name: "Maestro"
+    mode: core
+    directorate: orquestracao
+    keywords: [orquestracao, planejamento, delegacao, mesa, coordenacao]
+
+  - id: escrivao
+    name: "Escrivao (Knowledge Curator)"
+    mode: core
+    directorate: orquestracao
+    keywords: [documentacao, memoria, registro, rastreabilidade, ata]
+
+  # Estrategia
+  - id: cpo
+    name: "CPO (Chief Product Officer)"
+    mode: core
+    directorate: estrategia
+    keywords: [produto, prd, backlog, requisitos, roadmap, priorizacao]
+
+  # Tecnica
+  - id: cto
+    name: "CTO (Chief Technology Officer)"
+    mode: core
+    directorate: tecnica
+    keywords: [arquitetura, adr, stack, infraestrutura, decisao_tecnica]
+
+  - id: dev_senior
+    name: "Desenvolvedor Senior"
+    mode: core
+    directorate: tecnica
+    keywords: [codigo, revisao, padrao, refatoracao, mentoria]
+
+  - id: frontend
+    name: "Desenvolvedor Frontend"
+    mode: core
+    directorate: tecnica
+    keywords: [react, nextjs, tailwind, css, html, componente, ui, responsivo]
+
+  - id: backend
+    name: "Desenvolvedor Backend"
+    mode: core
+    directorate: tecnica
+    keywords: [api, banco_dados, sql, autenticacao, servidor, endpoint]
+
+  - id: integracoes
+    name: "Especialista em Integracoes"
+    mode: core
+    directorate: tecnica
+    keywords: [api_externa, webhook, oauth, sdk, integracao, terceiros]
+
+  - id: devops
+    name: "DevOps / SRE"
+    mode: core
+    directorate: tecnica
+    keywords: [deploy, ci_cd, pipeline, docker, monitoramento, infra]
+
+  - id: github_cloudflare
+    name: "GitHub & Cloudflare Ops"
+    mode: core
+    directorate: tecnica
+    keywords: [github, cloudflare, workers, pages, dns, dominio, repo]
+
+  - id: seguranca
+    name: "Seguranca / LGPD"
+    mode: core
+    directorate: tecnica
+    keywords: [seguranca, lgpd, owasp, criptografia, vulnerabilidade, privacidade]
+
+  - id: qa_tecnico
+    name: "QA Lead Tecnico"
+    mode: core
+    directorate: tecnica
+    keywords: [teste, qualidade, cobertura, e2e, unitario, regressao]
+
+  # Experiencia
+  - id: ux_ui
+    name: "UX/UI Designer"
+    mode: core
+    directorate: experiencia
+    keywords: [design, wireframe, prototipo, usabilidade, fluxo, acessibilidade]
+
+  - id: design_system_owner
+    name: "Design System Owner"
+    mode: core
+    directorate: experiencia
+    keywords: [design_system, tokens, componentes, padrao_visual, consistencia]
+
+  # ═══════════════════════════════
+  # ON-DEMAND (40 agentes — por gatilho)
+  # ═══════════════════════════════
+
+  # Orquestracao OD
+  - id: moderador
+    name: "Moderador de Mesa"
+    mode: od
+    directorate: orquestracao
+    keywords: [conflito, consenso, debate, mediacao, mesa_redonda]
+
+  # Estrategia OD
+  - id: ceo
+    name: "CEO"
+    mode: od
+    directorate: estrategia
+    keywords: [visao, estrategia, decisao_final, go_no_go]
+
+  - id: guardiao
+    name: "Guardiao de Qualidade"
+    mode: od
+    directorate: estrategia
+    keywords: [auditoria, conformidade, padrao, revisao_geral]
+
+  - id: scrum_master
+    name: "Scrum Master"
+    mode: od
+    directorate: estrategia
+    keywords: [sprint, cerimonia, impedimento, velocity, kanban]
+
+  # Comercial OD
+  - id: vendas
+    name: "Especialista em Vendas"
+    mode: od
+    directorate: comercial
+    keywords: [vendas, proposta, funil, conversao, cliente]
+
+  - id: marketplaces
+    name: "Especialista em Marketplaces"
+    mode: od
+    directorate: comercial
+    keywords: [marketplace, amazon, mercado_livre, shopee, listagem]
+
+  - id: omnichannel
+    name: "Especialista Omnichannel"
+    mode: od
+    directorate: comercial
+    keywords: [omnichannel, multicanal, loja_fisica, online, integracao_canais]
+
+  - id: ecommerce
+    name: "Especialista E-commerce"
+    mode: od
+    directorate: comercial
+    keywords: [ecommerce, loja_virtual, checkout, carrinho, pagamento]
+
+  - id: crm_cs
+    name: "CRM & Customer Success"
+    mode: od
+    directorate: comercial
+    keywords: [crm, customer_success, retencao, churn, nps, satisfacao]
+
+  # Financeiro OD
+  - id: cfo
+    name: "CFO (Chief Financial Officer)"
+    mode: od
+    directorate: financeiro
+    keywords: [financeiro, orcamento, fluxo_caixa, investimento, custos]
+
+  - id: tributario
+    name: "Especialista Tributario"
+    mode: od
+    directorate: financeiro
+    keywords: [imposto, tributo, nota_fiscal, icms, iss, regime_tributario]
+
+  - id: economista
+    name: "Economista"
+    mode: od
+    directorate: financeiro
+    keywords: [economia, mercado, analise_economica, projecao, cenario]
+
+  - id: pricing
+    name: "Especialista em Pricing"
+    mode: od
+    directorate: financeiro
+    keywords: [preco, precificacao, margem, desconto, estrategia_preco]
+
+  # Operacoes OD
+  - id: logistica
+    name: "Especialista em Logistica"
+    mode: od
+    directorate: operacoes
+    keywords: [logistica, frete, entrega, rastreamento, transportadora]
+
+  - id: compras
+    name: "Especialista em Compras"
+    mode: od
+    directorate: operacoes
+    keywords: [compras, fornecedor, cotacao, negociacao, procurement]
+
+  - id: estoque
+    name: "Especialista em Estoque"
+    mode: od
+    directorate: operacoes
+    keywords: [estoque, inventario, wms, giro, ruptura, reposicao]
+
+  # Dados OD
+  - id: bi
+    name: "Analista de BI"
+    mode: od
+    directorate: dados
+    keywords: [bi, dashboard, kpi, metrica, relatorio, looker, power_bi]
+
+  - id: ga4
+    name: "Especialista GA4"
+    mode: od
+    directorate: dados
+    keywords: [ga4, google_analytics, evento, conversao, funil_analytics]
+
+  - id: gtm
+    name: "Especialista GTM"
+    mode: od
+    directorate: dados
+    keywords: [gtm, tag_manager, tag, pixel, tracking, datalayer]
+
+  - id: ia_automacoes
+    name: "IA & Automacoes"
+    mode: od
+    directorate: dados
+    keywords: [ia, automacao, chatbot, workflow, n8n, zapier, make]
+
+  - id: data_engineer
+    name: "Engenheiro de Dados"
+    mode: od
+    directorate: dados
+    keywords: [pipeline_dados, etl, data_warehouse, bigquery, dbt]
+
+  - id: mlops
+    name: "MLOps"
+    mode: od
+    directorate: dados
+    keywords: [ml, modelo, treinamento, deploy_ml, mlflow, feature_store]
+
+  # Marketing OD
+  - id: seo
+    name: "Especialista SEO"
+    mode: od
+    directorate: marketing
+    keywords: [seo, busca_organica, keyword, backlink, serp, schema]
+
+  - id: copywriter
+    name: "Copywriter"
+    mode: od
+    directorate: marketing
+    keywords: [copy, texto, persuasao, headline, cta, landing_page]
+
+  - id: email_marketing
+    name: "Email Marketing"
+    mode: od
+    directorate: marketing
+    keywords: [email, newsletter, automacao_email, segmentacao, deliverability]
+
+  - id: social_media
+    name: "Social Media"
+    mode: od
+    directorate: marketing
+    keywords: [redes_sociais, instagram, linkedin, conteudo, engajamento]
+
+  - id: video
+    name: "Especialista em Video"
+    mode: od
+    directorate: marketing
+    keywords: [video, youtube, roteiro, edicao, thumbnail, reels]
+
+  - id: designer_grafico
+    name: "Designer Grafico"
+    mode: od
+    directorate: marketing
+    keywords: [design_grafico, banner, criativo, identidade_visual, figma]
+
+  # Experiencia OD
+  - id: ux_writer
+    name: "UX Writer"
+    mode: od
+    directorate: experiencia
+    keywords: [microcopy, texto_interface, tom_de_voz, mensagem_erro]
+
+  - id: branding
+    name: "Especialista em Branding"
+    mode: od
+    directorate: experiencia
+    keywords: [marca, identidade, posicionamento, brand_guide, tom]
+
+  - id: suporte_cx
+    name: "Suporte / CX"
+    mode: od
+    directorate: experiencia
+    keywords: [suporte, atendimento, ticket, help_desk, experiencia_cliente]
+
+  - id: onboarding
+    name: "Especialista em Onboarding"
+    mode: od
+    directorate: experiencia
+    keywords: [onboarding, tutorial, primeiro_uso, ativacao, retencao_inicial]
+
+  - id: tech_writer
+    name: "Technical Writer"
+    mode: od
+    directorate: experiencia
+    keywords: [documentacao_tecnica, api_docs, guia, referencia, changelog]
+
+  # Juridico OD
+  - id: advogado
+    name: "Advogado / Juridico"
+    mode: od
+    directorate: juridico
+    keywords: [contrato, termos_uso, privacidade, compliance, regulacao]
+
+  # People OD
+  - id: rh_people
+    name: "RH / People"
+    mode: od
+    directorate: people
+    keywords: [contratacao, cultura, avaliacao, beneficio, team_building]
+
+  # Qualidade OD
+  - id: qa_processos
+    name: "QA de Processos"
+    mode: od
+    directorate: qualidade
+    keywords: [processo, melhoria_continua, iso, auditoria_processo, sla]
+
+  # Sistemas OD
+  - id: sistemas_fiscais
+    name: "Sistemas Fiscais"
+    mode: od
+    directorate: sistemas
+    keywords: [nfe, nfce, sped, fiscal, sat, emissor]
+
+  - id: erp_backoffice
+    name: "ERP / Backoffice"
+    mode: od
+    directorate: sistemas
+    keywords: [erp, backoffice, contas_pagar, contas_receber, conciliacao]
+
+  # CFO Digital OD
+  - id: cfo_pj
+    name: "CFO Digital PJ"
+    mode: od
+    directorate: cfo_digital
+    keywords: [cfo_digital, saas_financeiro, metricas_financeiras, mrr, burn_rate]
+
+  # Growth OD
+  - id: growth_pm
+    name: "Growth Product Manager"
+    mode: od
+    directorate: growth
+    keywords: [growth, experimentacao, ab_test, retencao, ativacao, plg]
+
+  - id: fiscal_comex
+    name: "Fiscal / Comex"
+    mode: od
+    directorate: growth
+    keywords: [comex, importacao, exportacao, ncm, siscomex, cambio]
+
+  # Educacao OD
+  - id: treinamentos
+    name: "Treinamentos"
+    mode: od
+    directorate: educacao
+    keywords: [treinamento, capacitacao, lms, curso, certificacao, material]
