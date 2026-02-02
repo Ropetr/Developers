@@ -1,0 +1,20 @@
+name = "developers"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+[vars]
+ENVIRONMENT = "production"
+
+# Vectorize - Memória semântica dos agentes
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "developers-memory"
+
+# D1 - Banco de dados para histórico e metadados
+[[d1_databases]]
+binding = "DB"
+database_name = "developers-db"
+database_id = "" # Será preenchido após criar o banco
+
+# Secrets (configurar via: wrangler secret put ANTHROPIC_API_KEY)
+# ANTHROPIC_API_KEY = "sk-ant-..."
