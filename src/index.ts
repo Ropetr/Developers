@@ -4,6 +4,7 @@
 import { Env, UserMessage, AgentResponse } from "./types";
 import { AgentRunner } from "./agents/runner";
 import { AGENTS, findBestAgent, DEFAULT_AGENT } from "./agents/definitions";
+import { getChatHTML } from "./ui/chat";
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -44,6 +45,11 @@ export default {
             200,
             corsHeaders
           );
+
+        case "/app":
+          return new Response(getChatHTML(), {
+            headers: { "Content-Type": "text/html;charset=UTF-8", ...corsHeaders },
+          });
 
         case "/health":
           return jsonResponse({ status: "ok", timestamp: Date.now() }, 200, corsHeaders);
