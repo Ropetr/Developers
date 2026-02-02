@@ -9,6 +9,14 @@ export function getChatHTML(): string {
   <title>Developers - Software House IA</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #555; }
+    * { scrollbar-width: thin; scrollbar-color: #333 transparent; }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: #0f0f0f;
