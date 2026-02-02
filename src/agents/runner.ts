@@ -1,8 +1,35 @@
 // Motor de execução dos agentes - conecta com a API do Claude
+// Agora com TOOL USE: agentes podem executar ações reais (criar arquivos, GitHub, etc.)
 
-import { Env, ChatMessage, ClaudeContentBlock, Attachment, AgentResponse } from "../types";
-import { AgentDefinition, AGENTS } from "./definitions";
+import { Env, ChatMessage, ClaudeContentBlock, Attachment, AgentResponse, AgentDefinition } from "../types";
+import { AGENTS } from "./definitions";
 import { MemoryStore } from "../memory/store";
+import { AGENT_TOOLS, ToolExecutor, FileOperation } from "./tools";
+
+// Tipo de resposta extendido com file operations
+export interface AgentResponseWithActions extends AgentResponse {
+  file_operations?: FileOperation[];
+}
+
+// Tipos da resposta do Claude com tool use
+interface ClaudeResponse {
+  content: Array<ClaudeContentItem>;
+  stop_reason: "end_turn" | "tool_use" | "max_tokens";
+}
+
+interface ClaudeContentItem {
+  type: "text" | "tool_use";
+  text?: string;
+  id?: string;
+  name?: string;
+  input?: Record<string, unknown>;
+}
+
+interface ToolResultMessage {
+  type: "tool_result";
+  tool_use_id: string;
+  content: string;
+}
 
 export class AgentRunner {
   private env: Env;
@@ -18,7 +45,7 @@ export class AgentRunner {
     userMessage: string,
     sessionId: string,
     attachments?: Attachment[]
-  ): Promise<AgentResponse> {
+  ): Promise<AgentResponseWithActions> {
     const agent = AGENTS[agentId];
     if (!agent) {
       throw new Error(`Agente "${agentId}" não encontrado`);
@@ -52,20 +79,29 @@ export class AgentRunner {
       systemPrompt += "\n\n--- BASE DE CONHECIMENTO ---\nVocê possui o seguinte conhecimento especializado. Use-o para fundamentar suas respostas:\n\n" + knowledgeEntries.join("\n\n---\n\n");
     }
 
-    // 6. Chama a API do Claude
-    const response = await this.callClaude(systemPrompt, messages);
+    // 6. Chama a API do Claude COM TOOL USE LOOP
+    const toolExecutor = new ToolExecutor(this.env);
+    const { text: response, fileOps } = await this.callClaudeWithTools(
+      systemPrompt,
+      messages,
+      toolExecutor
+    );
 
-    // 5. Salva a conversa na memória (sem os binários dos anexos)
+    // 7. Salva a conversa na memória
     const attachmentSummary = attachments?.length
       ? `\n[Anexos: ${attachments.map(a => a.name).join(", ")}]`
       : "";
-    await this.saveToMemory(sessionId, agentId, userMessage + attachmentSummary, response);
+    const actionSummary = fileOps.length > 0
+      ? `\n[Ações executadas: ${fileOps.map(op => `${op.action} ${op.path}`).join(", ")}]`
+      : "";
+    await this.saveToMemory(sessionId, agentId, userMessage + attachmentSummary, response + actionSummary);
 
     return {
       agent: agent.name,
       message: response,
       session_id: sessionId,
       memories_used: relevantMemories.length,
+      file_operations: fileOps.length > 0 ? fileOps : undefined,
     };
   }
 
@@ -143,38 +179,111 @@ export class AgentRunner {
     return messages;
   }
 
-  private async callClaude(
+  /**
+   * Chama o Claude com Tool Use. Loop:
+   * 1. Envia mensagem com ferramentas disponíveis
+   * 2. Se Claude responde com tool_use → executa a ferramenta → envia resultado → repete
+   * 3. Se Claude responde com end_turn → retorna texto final
+   * Max 10 iterações para evitar loops infinitos
+   */
+  private async callClaudeWithTools(
     systemPrompt: string,
-    messages: ChatMessage[]
-  ): Promise<string> {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": this.env.ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 4096,
-        system: systemPrompt,
-        messages: messages.map((m) => ({
-          role: m.role,
-          content: m.content,
-        })),
-      }),
-    });
+    messages: ChatMessage[],
+    toolExecutor: ToolExecutor,
+    maxIterations = 10
+  ): Promise<{ text: string; fileOps: FileOperation[] }> {
+    // Clone messages array para poder adicionar tool results
+    const conversationMessages: Array<{
+      role: string;
+      content: unknown;
+    }> = messages.map((m) => ({
+      role: m.role,
+      content: m.content,
+    }));
 
-    if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`Claude API error (${response.status}): ${error}`);
+    let finalText = "";
+    let iterations = 0;
+
+    while (iterations < maxIterations) {
+      iterations++;
+
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": this.env.ANTHROPIC_API_KEY,
+          "anthropic-version": "2023-06-01",
+        },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 8192,
+          system: systemPrompt,
+          tools: AGENT_TOOLS,
+          messages: conversationMessages,
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.text();
+        throw new Error(`Claude API error (${response.status}): ${error}`);
+      }
+
+      const data = (await response.json()) as ClaudeResponse;
+
+      // Coleta texto e tool_use blocks
+      const textParts: string[] = [];
+      const toolUses: ClaudeContentItem[] = [];
+
+      for (const block of data.content) {
+        if (block.type === "text" && block.text) {
+          textParts.push(block.text);
+        } else if (block.type === "tool_use") {
+          toolUses.push(block);
+        }
+      }
+
+      // Adiciona resposta do assistant ao histórico
+      conversationMessages.push({
+        role: "assistant",
+        content: data.content,
+      });
+
+      // Se não há tool_use, terminamos
+      if (data.stop_reason !== "tool_use" || toolUses.length === 0) {
+        finalText += textParts.join("\n");
+        break;
+      }
+
+      // Tem tool_use: executa cada ferramenta e envia resultado
+      finalText += textParts.join("\n");
+
+      const toolResults: ToolResultMessage[] = [];
+      for (const toolUse of toolUses) {
+        if (!toolUse.name || !toolUse.id) continue;
+
+        const result = await toolExecutor.execute(
+          toolUse.name,
+          toolUse.input || {}
+        );
+
+        toolResults.push({
+          type: "tool_result",
+          tool_use_id: toolUse.id,
+          content: result.output,
+        });
+      }
+
+      // Envia resultados das ferramentas de volta ao Claude
+      conversationMessages.push({
+        role: "user",
+        content: toolResults,
+      });
     }
 
-    const data = (await response.json()) as {
-      content: Array<{ type: string; text: string }>;
+    return {
+      text: finalText,
+      fileOps: toolExecutor.getFileOperations(),
     };
-
-    return data.content[0]?.text ?? "Sem resposta do agente.";
   }
 
   private async saveToMemory(

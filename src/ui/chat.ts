@@ -438,12 +438,30 @@ export function getChatHTML(): string {
         <div class="agent-selector">
           <label>Agente:</label>
           <select id="agentSelect">
-            <option value="auto">Auto</option>
-            <option value="manager">Gerente</option>
-            <option value="frontend">Frontend</option>
-            <option value="backend">Backend</option>
-            <option value="fullstack">Fullstack</option>
-            <option value="devops">DevOps</option>
+            <option value="auto">Auto (detecta)</option>
+            <optgroup label="Orquestracao">
+              <option value="maestro">Maestro</option>
+              <option value="escrivao">Escrivao</option>
+            </optgroup>
+            <optgroup label="Estrategia">
+              <option value="cpo">CPO (Produto)</option>
+            </optgroup>
+            <optgroup label="Tecnica">
+              <option value="cto">CTO (Arquitetura)</option>
+              <option value="dev_senior">Dev Senior</option>
+              <option value="frontend">Frontend</option>
+              <option value="backend">Backend</option>
+              <option value="fullstack">Fullstack</option>
+              <option value="integracoes">Integracoes</option>
+              <option value="devops">DevOps / SRE</option>
+              <option value="github_cloudflare">GitHub &amp; Cloudflare</option>
+              <option value="seguranca">Seguranca / LGPD</option>
+              <option value="qa_tecnico">QA Tecnico</option>
+            </optgroup>
+            <optgroup label="Experiencia">
+              <option value="ux_ui">UX/UI Designer</option>
+              <option value="design_system_owner">Design System</option>
+            </optgroup>
           </select>
         </div>
         <button class="settings-btn" onclick="openAgentsConfig()">
@@ -502,13 +520,16 @@ export function getChatHTML(): string {
     <div class="chat-area" id="chatArea">
       <div class="welcome" id="welcomeScreen">
         <h2>Developers AI</h2>
-        <p>Sua software house com agentes IA especializados.</p>
+        <p>Software house com agentes IA que executam acoes reais. Conecte uma pasta e peca para criar seu projeto.</p>
         <div class="agents-grid">
-          <div class="agent-card"><h3>Gerente</h3><p>Coordena e planeja</p></div>
-          <div class="agent-card"><h3>Frontend</h3><p>React, Next.js, UI/UX</p></div>
+          <div class="agent-card"><h3>Maestro</h3><p>Coordena e planeja</p></div>
+          <div class="agent-card"><h3>CPO</h3><p>Define produto</p></div>
+          <div class="agent-card"><h3>CTO</h3><p>Arquitetura e stack</p></div>
+          <div class="agent-card"><h3>Frontend</h3><p>React, Next.js, UI</p></div>
           <div class="agent-card"><h3>Backend</h3><p>APIs, banco de dados</p></div>
-          <div class="agent-card"><h3>Fullstack</h3><p>Apps end-to-end</p></div>
           <div class="agent-card"><h3>DevOps</h3><p>Deploy, CI/CD</p></div>
+          <div class="agent-card"><h3>GitHub/CF</h3><p>Repos e publicacao</p></div>
+          <div class="agent-card"><h3>+7 agentes</h3><p>Seguranca, QA, UX...</p></div>
         </div>
       </div>
     </div>
@@ -677,7 +698,7 @@ export function getChatHTML(): string {
     }
 
     function agentName(id) {
-      var names = {manager:'Gerente de Projetos',frontend:'Desenvolvedor Frontend',backend:'Desenvolvedor Backend',fullstack:'Desenvolvedor Fullstack',devops:'Engenheiro DevOps'};
+      var names = {maestro:'Maestro',manager:'Maestro',escrivao:'Escrivao',cpo:'CPO',cto:'CTO',dev_senior:'Dev Senior',frontend:'Frontend',backend:'Backend',fullstack:'Fullstack',integracoes:'Integracoes',devops:'DevOps',github_cloudflare:'GitHub/CF',seguranca:'Seguranca',qa_tecnico:'QA',ux_ui:'UX/UI',design_system_owner:'Design System'};
       return names[id] || id;
     }
 
@@ -920,6 +941,10 @@ export function getChatHTML(): string {
         } else {
           sessionId = data.session_id;
           addMessage(data.message, 'assistant', data.agent, data.memories_used);
+          // Auto-apply file operations from agent tools
+          if (data.file_operations && data.file_operations.length > 0) {
+            await applyFileOperations(data.file_operations);
+          }
           loadSessions();
         }
       } catch (err) {
@@ -933,18 +958,27 @@ export function getChatHTML(): string {
 
     // ---- AGENTS CONFIG ----
     var agentsData = {
-      manager: { name: 'Gerente de Projetos', desc: 'Coordena, planeja e distribui tarefas entre os agentes.', skills: ['planejamento','coordenacao','requisitos','priorizacao'] },
-      frontend: { name: 'Desenvolvedor Frontend', desc: 'React, Next.js, Tailwind CSS, UI/UX e responsividade.', skills: ['react','nextjs','tailwind','typescript','ui/ux'] },
-      backend: { name: 'Desenvolvedor Backend', desc: 'APIs, banco de dados, autenticacao e logica de negocio.', skills: ['api','sql','autenticacao','cloudflare workers'] },
-      fullstack: { name: 'Desenvolvedor Fullstack', desc: 'Aplicacoes completas frontend + backend integrados.', skills: ['react','nextjs','api','sql','deploy'] },
-      devops: { name: 'Engenheiro DevOps', desc: 'Deploy, CI/CD, infraestrutura, dominios e monitoramento.', skills: ['deploy','ci/cd','cloudflare','github actions'] }
+      maestro: { name: 'Maestro', desc: 'Orquestrador geral. Coordena agentes, planeja projetos, delega tarefas.', skills: ['orquestracao','planejamento','delegacao','coordenacao'] },
+      escrivao: { name: 'Escrivao', desc: 'Documenta decisoes, atas, ADRs e mantem rastreabilidade.', skills: ['documentacao','memoria','registro','ata'] },
+      cpo: { name: 'CPO (Produto)', desc: 'Define O QUE construir: PRDs, backlog, requisitos e roadmap.', skills: ['produto','prd','backlog','roadmap'] },
+      cto: { name: 'CTO (Arquitetura)', desc: 'Define COMO construir: arquitetura, stack, ADRs e padroes.', skills: ['arquitetura','adr','stack','infraestrutura'] },
+      dev_senior: { name: 'Dev Senior', desc: 'Codigo de alta qualidade, code review, refatoracao e mentoria.', skills: ['codigo','revisao','padrao','refatoracao'] },
+      frontend: { name: 'Frontend', desc: 'React, Next.js, Tailwind CSS, UI/UX e responsividade.', skills: ['react','nextjs','tailwind','typescript'] },
+      backend: { name: 'Backend', desc: 'APIs, banco de dados, autenticacao e logica de negocio.', skills: ['api','sql','autenticacao','cloudflare'] },
+      integracoes: { name: 'Integracoes', desc: 'APIs externas, webhooks, OAuth, SDKs e terceiros.', skills: ['api_externa','webhook','oauth','sdk'] },
+      devops: { name: 'DevOps / SRE', desc: 'Deploy, CI/CD, infraestrutura e monitoramento.', skills: ['deploy','ci_cd','cloudflare','github'] },
+      github_cloudflare: { name: 'GitHub & Cloudflare', desc: 'Repos, Workers, Pages, DNS e dominios.', skills: ['github','cloudflare','workers','dns'] },
+      seguranca: { name: 'Seguranca / LGPD', desc: 'Seguranca, OWASP, LGPD, criptografia.', skills: ['seguranca','lgpd','owasp','criptografia'] },
+      qa_tecnico: { name: 'QA Tecnico', desc: 'Testes automatizados, qualidade e cobertura.', skills: ['teste','qualidade','cobertura','e2e'] },
+      ux_ui: { name: 'UX/UI Designer', desc: 'Design de interfaces, wireframes, prototipagem.', skills: ['design','wireframe','prototipo','usabilidade'] },
+      design_system_owner: { name: 'Design System', desc: 'Tokens, componentes, padroes visuais e consistencia.', skills: ['design_system','tokens','componentes','padrao'] }
     };
-    var selectedAgent = 'manager';
+    var selectedAgent = 'maestro';
 
     function openAgentsConfig() {
       document.getElementById('agentsModal').classList.add('active');
       renderAgentTabs();
-      selectAgentTab('manager');
+      selectAgentTab('maestro');
     }
     function closeAgentsConfig() { document.getElementById('agentsModal').classList.remove('active'); }
     document.getElementById('agentsModal').addEventListener('click', function(e) { if (e.target === this) closeAgentsConfig(); });
@@ -1213,7 +1247,39 @@ export function getChatHTML(): string {
       return null;
     }
 
-    // ---- WRITE FILES TO PROJECT ----
+    // ---- AUTO-APPLY FILE OPERATIONS FROM AGENT TOOLS ----
+    async function applyFileOperations(ops) {
+      if (!projectHandle) {
+        showToast(ops.length + ' arquivo(s) criados pelo agente. Conecte uma pasta para aplicar automaticamente.', false);
+        return;
+      }
+      var applied = 0;
+      for (var i = 0; i < ops.length; i++) {
+        try {
+          var op = ops[i];
+          var parts = op.path.replace(/^\\/+/, '').split('/').filter(function(p) { return p.length > 0; });
+          var dirHandle = projectHandle;
+          for (var j = 0; j < parts.length - 1; j++) {
+            dirHandle = await dirHandle.getDirectoryHandle(parts[j], { create: true });
+          }
+          var fileName = parts[parts.length - 1];
+          var fileHandle = await dirHandle.getFileHandle(fileName, { create: true });
+          var writable = await fileHandle.createWritable();
+          await writable.write(op.content);
+          await writable.close();
+          applied++;
+        } catch(e) {
+          console.error('Erro aplicando ' + ops[i].path, e);
+        }
+      }
+      if (applied > 0) {
+        showToast(applied + ' arquivo(s) aplicados no projeto automaticamente!');
+        projectTree = await readDirRecursive(projectHandle, '', 0);
+        renderProjectUI();
+      }
+    }
+
+    // ---- WRITE FILES TO PROJECT (manual from code blocks) ----
     async function applyCodeToProject(filePath, content, btn) {
       if (!projectHandle) { showToast('Nenhuma pasta conectada.', true); return; }
       if (!filePath) {

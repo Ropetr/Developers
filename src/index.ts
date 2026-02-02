@@ -2,7 +2,7 @@
 // Ponto de entrada do Cloudflare Worker
 
 import { Env, UserMessage, AgentResponse } from "./types";
-import { AgentRunner } from "./agents/runner";
+import { AgentRunner, AgentResponseWithActions } from "./agents/runner";
 import { AGENTS, findBestAgent, DEFAULT_AGENT } from "./agents/definitions";
 import { getChatHTML } from "./ui/chat";
 import { createTokenStore } from "./integrations/tokens";
@@ -91,7 +91,7 @@ async function handleChat(request: Request, env: Env, corsHeaders: Record<string
   ).bind(sessionId, Date.now(), Date.now(), body.content.substring(0, 100)).run();
 
   const runner = new AgentRunner(env);
-  const response: AgentResponse = await runner.run(agentId, body.content, sessionId, body.attachments);
+  const response: AgentResponseWithActions = await runner.run(agentId, body.content, sessionId, body.attachments);
 
   return jsonResponse(response, 200, corsHeaders);
 }
