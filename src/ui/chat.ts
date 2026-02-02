@@ -215,19 +215,39 @@ export function getChatHTML(): string {
     .agent-card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 12px 16px; text-align: left; width: 200px; }
     .agent-card h3 { font-size: 13px; color: #6366f1; margin-bottom: 4px; }
     .agent-card p { font-size: 11px; color: #666; margin: 0; }
-    .input-area { background: #1a1a1a; border-top: 1px solid #2a2a2a; padding: 14px 20px; display: flex; gap: 12px; }
+    .input-wrapper { background: #1a1a1a; border-top: 1px solid #2a2a2a; }
+    .attachments-preview {
+      display: flex; gap: 8px; padding: 8px 20px 0; flex-wrap: wrap;
+    }
+    .attachment-chip {
+      background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 6px;
+      padding: 4px 10px; font-size: 12px; color: #aaa; display: flex; align-items: center; gap: 6px;
+    }
+    .attachment-chip img {
+      width: 24px; height: 24px; border-radius: 4px; object-fit: cover;
+    }
+    .attachment-chip .remove-att {
+      background: none; border: none; color: #666; cursor: pointer; font-size: 14px; padding: 0 2px;
+    }
+    .attachment-chip .remove-att:hover { color: #ef4444; }
+    .input-area { padding: 14px 20px; display: flex; gap: 12px; align-items: flex-end; }
     .input-area textarea {
       flex: 1; background: #2a2a2a; color: #e0e0e0; border: 1px solid #3a3a3a;
       border-radius: 8px; padding: 12px 16px; font-size: 14px; font-family: inherit;
       resize: none; height: 48px; max-height: 120px;
     }
     .input-area textarea:focus { outline: none; border-color: #6366f1; }
-    .input-area button {
+    .btn-attach {
+      background: #2a2a2a; border: 1px solid #3a3a3a; color: #888; border-radius: 8px;
+      padding: 12px 14px; cursor: pointer; font-size: 18px; line-height: 1; flex-shrink: 0;
+    }
+    .btn-attach:hover { border-color: #6366f1; color: #e0e0e0; }
+    .input-area button.send-btn {
       background: #6366f1; color: #fff; border: none; border-radius: 8px;
       padding: 12px 24px; font-size: 14px; font-weight: 600; cursor: pointer;
     }
-    .input-area button:hover { background: #4f46e5; }
-    .input-area button:disabled { background: #333; color: #666; cursor: not-allowed; }
+    .input-area button.send-btn:hover { background: #4f46e5; }
+    .input-area button.send-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
     .typing { align-self: flex-start; color: #555; font-size: 13px; padding: 8px 16px; }
     .typing span { animation: blink 1.4s infinite; }
     .typing span:nth-child(2) { animation-delay: 0.2s; }
@@ -317,9 +337,14 @@ export function getChatHTML(): string {
       </div>
     </div>
 
-    <div class="input-area">
-      <textarea id="messageInput" placeholder="Descreva o que voce precisa..." rows="1"></textarea>
-      <button id="sendBtn" onclick="sendMessage()">Enviar</button>
+    <div class="input-wrapper">
+      <div class="attachments-preview" id="attachmentsPreview"></div>
+      <div class="input-area">
+        <input type="file" id="fileInput" multiple accept="image/*,.txt,.js,.ts,.py,.json,.css,.html,.md,.sql,.csv,.xml,.yaml,.yml,.env,.toml,.cfg,.ini,.sh,.bat" style="display:none" />
+        <button class="btn-attach" onclick="document.getElementById('fileInput').click()" title="Anexar arquivo">&#128206;</button>
+        <textarea id="messageInput" placeholder="Descreva o que voce precisa..." rows="1"></textarea>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()">Enviar</button>
+      </div>
     </div>
   </div>
 
@@ -334,6 +359,68 @@ export function getChatHTML(): string {
 
     var sessionId = null;
     var welcomeVisible = true;
+    var pendingAttachments = [];
+    var fileInput = document.getElementById('fileInput');
+    var attachmentsPreview = document.getElementById('attachmentsPreview');
+
+    // ---- ATTACHMENTS ----
+    fileInput.addEventListener('change', function(e) {
+      var files = Array.from(e.target.files || []);
+      files.forEach(function(file) {
+        if (file.size > 10 * 1024 * 1024) {
+          alert('Arquivo "' + file.name + '" excede 10MB');
+          return;
+        }
+        var reader = new FileReader();
+        var isImage = file.type.startsWith('image/');
+        if (isImage) {
+          reader.onload = function(ev) {
+            var base64 = ev.target.result.split(',')[1];
+            pendingAttachments.push({
+              type: 'image',
+              name: file.name,
+              media_type: file.type,
+              data: base64,
+              preview: ev.target.result
+            });
+            renderAttachmentPreviews();
+          };
+          reader.readAsDataURL(file);
+        } else {
+          reader.onload = function(ev) {
+            pendingAttachments.push({
+              type: 'text',
+              name: file.name,
+              data: ev.target.result,
+              preview: null
+            });
+            renderAttachmentPreviews();
+          };
+          reader.readAsText(file);
+        }
+      });
+      fileInput.value = '';
+    });
+
+    function renderAttachmentPreviews() {
+      if (pendingAttachments.length === 0) {
+        attachmentsPreview.innerHTML = '';
+        return;
+      }
+      attachmentsPreview.innerHTML = pendingAttachments.map(function(att, idx) {
+        var imgTag = att.preview ? '<img src="' + att.preview + '" />' : '';
+        var icon = att.type === 'text' ? '&#128196; ' : '';
+        return '<div class="attachment-chip">'
+          + imgTag + icon + escapeHtml(att.name)
+          + ' <button class="remove-att" onclick="removeAttachment(' + idx + ')">&times;</button>'
+          + '</div>';
+      }).join('');
+    }
+
+    function removeAttachment(idx) {
+      pendingAttachments.splice(idx, 1);
+      renderAttachmentPreviews();
+    }
 
     // ---- SIDEBAR ----
     function toggleSidebar() {
@@ -531,8 +618,24 @@ export function getChatHTML(): string {
 
     async function sendMessage() {
       var content = messageInput.value.trim();
-      if (!content) return;
-      addMessage(content, 'user');
+      if (!content && pendingAttachments.length === 0) return;
+      if (!content) content = '(anexo)';
+
+      // Build display text with attachment names
+      var displayText = content;
+      if (pendingAttachments.length > 0) {
+        var names = pendingAttachments.map(function(a) { return a.name; });
+        displayText += '\n[Anexos: ' + names.join(', ') + ']';
+      }
+      addMessage(displayText, 'user');
+
+      // Capture attachments for request, then clear
+      var attachmentsToSend = pendingAttachments.map(function(a) {
+        return { type: a.type, name: a.name, media_type: a.media_type || undefined, data: a.data };
+      });
+      pendingAttachments = [];
+      renderAttachmentPreviews();
+
       messageInput.value = '';
       messageInput.style.height = '48px';
       sendBtn.disabled = true;
@@ -543,6 +646,7 @@ export function getChatHTML(): string {
         if (sessionId) body.session_id = sessionId;
         var sel = agentSelect.value;
         if (sel !== 'auto') body.agent = sel;
+        if (attachmentsToSend.length > 0) body.attachments = attachmentsToSend;
         var response = await fetch('/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

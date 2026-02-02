@@ -1,6 +1,6 @@
 // Motor de execução dos agentes - conecta com a API do Claude
 
-import { Env, ChatMessage, AgentResponse } from "../types";
+import { Env, ChatMessage, ClaudeContentBlock, Attachment, AgentResponse } from "../types";
 import { AgentDefinition, AGENTS } from "./definitions";
 import { MemoryStore } from "../memory/store";
 
@@ -16,7 +16,8 @@ export class AgentRunner {
   async run(
     agentId: string,
     userMessage: string,
-    sessionId: string
+    sessionId: string,
+    attachments?: Attachment[]
   ): Promise<AgentResponse> {
     const agent = AGENTS[agentId];
     if (!agent) {
@@ -33,13 +34,16 @@ export class AgentRunner {
     const recentHistory = await this.memory.getRecentHistory(sessionId, 10);
 
     // 3. Monta o contexto para o Claude
-    const messages = this.buildMessages(agent, userMessage, relevantMemories, recentHistory);
+    const messages = this.buildMessages(agent, userMessage, relevantMemories, recentHistory, attachments);
 
     // 4. Chama a API do Claude
     const response = await this.callClaude(agent.systemPrompt, messages);
 
-    // 5. Salva a conversa na memória
-    await this.saveToMemory(sessionId, agentId, userMessage, response);
+    // 5. Salva a conversa na memória (sem os binários dos anexos)
+    const attachmentSummary = attachments?.length
+      ? `\n[Anexos: ${attachments.map(a => a.name).join(", ")}]`
+      : "";
+    await this.saveToMemory(sessionId, agentId, userMessage + attachmentSummary, response);
 
     return {
       agent: agent.name,
@@ -53,24 +57,21 @@ export class AgentRunner {
     agent: AgentDefinition,
     userMessage: string,
     memories: { content: string }[],
-    history: { content: string }[]
+    history: { content: string }[],
+    attachments?: Attachment[]
   ): ChatMessage[] {
     const messages: ChatMessage[] = [];
 
     // Adiciona contexto das memórias relevantes
     if (memories.length > 0) {
-      const memoryContext = memories
-        .map((m) => m.content)
-        .join("\n---\n");
-
+      const memoryContext = memories.map((m) => m.content).join("\n---\n");
       messages.push({
         role: "user",
         content: `[CONTEXTO DE MEMÓRIAS ANTERIORES]\n${memoryContext}`,
       });
       messages.push({
         role: "assistant",
-        content:
-          "Entendido. Tenho acesso ao contexto das conversas e decisões anteriores. Como posso ajudar?",
+        content: "Entendido. Tenho acesso ao contexto das conversas e decisões anteriores. Como posso ajudar?",
       });
     }
 
@@ -85,15 +86,43 @@ export class AgentRunner {
           });
         }
       } catch {
-        // Se não é JSON, ignora
+        // ignora
       }
     }
 
-    // Adiciona mensagem atual do usuário
-    messages.push({
-      role: "user",
-      content: userMessage,
-    });
+    // Monta mensagem atual (com ou sem anexos)
+    if (attachments && attachments.length > 0) {
+      const contentBlocks: ClaudeContentBlock[] = [];
+
+      // Adiciona imagens primeiro
+      for (const att of attachments) {
+        if (att.type === "image" && att.media_type && att.data) {
+          contentBlocks.push({
+            type: "image",
+            source: {
+              type: "base64",
+              media_type: att.media_type,
+              data: att.data,
+            },
+          });
+        } else if (att.type === "text" && att.data) {
+          contentBlocks.push({
+            type: "text",
+            text: `[Arquivo: ${att.name}]\n${att.data}`,
+          });
+        }
+      }
+
+      // Adiciona texto do usuário
+      contentBlocks.push({
+        type: "text",
+        text: userMessage,
+      });
+
+      messages.push({ role: "user", content: contentBlocks });
+    } else {
+      messages.push({ role: "user", content: userMessage });
+    }
 
     return messages;
   }
@@ -138,7 +167,6 @@ export class AgentRunner {
     userMessage: string,
     assistantResponse: string
   ): Promise<void> {
-    // Salva mensagem do usuário
     await this.memory.save({
       session_id: sessionId,
       agent_id: agentId,
@@ -146,7 +174,6 @@ export class AgentRunner {
       type: "conversation",
     });
 
-    // Salva resposta do agente
     await this.memory.save({
       session_id: sessionId,
       agent_id: agentId,

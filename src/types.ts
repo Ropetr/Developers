@@ -8,17 +8,36 @@ export interface Env {
   ENVIRONMENT: string;
 }
 
+// Anexo enviado pelo usuário
+export interface Attachment {
+  type: "image" | "text";
+  name: string;
+  media_type?: string; // image/png, image/jpeg, etc.
+  data: string; // base64 para imagens, texto puro para arquivos
+}
+
 // Mensagem de entrada do usuário
 export interface UserMessage {
   content: string;
   session_id?: string;
-  agent?: string; // Agente específico para direcionar (opcional)
+  agent?: string;
+  attachments?: Attachment[];
 }
 
-// Mensagem no formato da API do Claude
+// Mensagem no formato da API do Claude (com suporte a multimodal)
 export interface ChatMessage {
   role: "user" | "assistant";
-  content: string;
+  content: string | ClaudeContentBlock[];
+}
+
+export interface ClaudeContentBlock {
+  type: "text" | "image";
+  text?: string;
+  source?: {
+    type: "base64";
+    media_type: string;
+    data: string;
+  };
 }
 
 // Definição de um agente especialista

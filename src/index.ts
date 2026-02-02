@@ -88,7 +88,7 @@ async function handleChat(request: Request, env: Env, corsHeaders: Record<string
   ).bind(sessionId, Date.now(), Date.now(), body.content.substring(0, 100)).run();
 
   const runner = new AgentRunner(env);
-  const response: AgentResponse = await runner.run(agentId, body.content, sessionId);
+  const response: AgentResponse = await runner.run(agentId, body.content, sessionId, body.attachments);
 
   return jsonResponse(response, 200, corsHeaders);
 }
